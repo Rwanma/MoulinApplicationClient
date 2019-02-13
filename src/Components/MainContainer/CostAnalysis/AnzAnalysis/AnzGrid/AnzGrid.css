@@ -1,0 +1,44 @@
+
+.button-container {
+              display: flex;
+              justify-content: left;
+              background-color: cadetblue;
+
+          }
+
+
+.toggle-button-anz{
+                       position: relative;
+                       top: 5px;
+                       width: 200px;
+                       height: 40px;
+
+                   }
+
+
+.filter-button{
+              position: relative;
+              top: 2px;
+              left: 10px;
+          }
+
+
+.begin-date-picker{
+                    position: relative;
+                    top: 10px;
+
+                }
+
+
+.end-date-picker{
+                  position: relative;
+                  top: 10px;
+
+              }
+
+.error-message{
+             position: relative;
+             top: 12px;
+             left: 10px;
+         }
+

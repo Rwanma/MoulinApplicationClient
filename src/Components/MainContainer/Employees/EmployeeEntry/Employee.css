@@ -1,0 +1,29 @@
+.label-container {
+             display: flex;
+             width: 100%;
+             background-color: lightsteelblue;
+         }
+
+.label-container div:last-child {
+                                   margin-left: auto;
+                               }
+
+.action-button {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              width: 200px;
+          }
+
+
+.multi-select{
+             display: flex;
+             flex-direction: column;
+             justify-content: flex-end;
+             width: 200px;
+         }
+
+
+.selector{
+    width: 200px;
+}

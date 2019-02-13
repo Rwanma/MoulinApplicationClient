@@ -1,28 +1,82 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import MainContainer from "./Components/MainContainer/MainContainer/MainContainer";
+import TopBar from "./Components/TopBar/TopBar";
+import ScreenStates from "./ScreenStates/ScreenStates";
+import LogonScreen from './Components/LogonScreen/LogonScreen'
+
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            openRightDrawer: false,
+            screenDisplay: ScreenStates.getCostAnalysisTabName(),
+            listForDrawer: ScreenStates.getListFromTabName(ScreenStates.getCostAnalysisTabName()),
+            screenTitle: 'ANZ Analysis',
+            displayApp: false
+        };
+
+    }
+
+    screenDisplayType = '';
+
+    render() {
+        return (
+            <div className="App">
+                {(this.state.displayApp === false) ? (
+                        <LogonScreen verifyLogon={this.verifyLogon.bind(this)} />
+                    ) :
+                    (
+                        <div>
+                            <TopBar openRightSideDrawer={this.openRightSideDrawer.bind(this)}
+                                    changeScreenDisplay={this.changeScreenDisplay.bind(this)}
+                                    screenTitle={this.state.screenTitle} />
+                            <MainContainer openRightDrawer={this.state.openRightDrawer}
+                                           listForDrawer={this.state.listForDrawer}
+                                           screenDisplayType={this.state.screenDisplay}
+                                           closeRightSideDrawer={this.closeRightSideDrawer.bind(this)}
+                                           changeScreenDisplay={this.changeScreenDisplay.bind(this)} />
+                        </div>
+                    )}
+            </div>
+        );
+    }
+
+    verifyLogon(username, password) {
+        if (username === 'Marwan' && password === 'Sefian') {
+            this.setState({ displayApp: true });
+        }
+        else {
+            alert('Wrong username / password')
+        }
+    }
+
+
+    openRightSideDrawer() {
+        this.setState({ openRightDrawer: true });
+    }
+
+    closeRightSideDrawer() {
+        this.setState({ openRightDrawer: false });
+    }
+
+    changeScreenDisplay(screenToDisplay, index) {
+        let newScreenTitle = screenToDisplay;
+        if (screenToDisplay === 'Cost Analysis') {
+            newScreenTitle = 'ANZ Analysis';
+        } else if (screenToDisplay === 'Employees') {
+            newScreenTitle = 'Employee Entry';
+        }
+
+        this.setState({
+            screenDisplay: screenToDisplay,
+            listForDrawer: ScreenStates.getListFromTabName(screenToDisplay),
+            screenTitle: newScreenTitle
+        });
+
+    }
 }
 
 export default App;

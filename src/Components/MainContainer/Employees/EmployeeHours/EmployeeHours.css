@@ -1,0 +1,16 @@
+
+.button-container {
+              display: flex;
+              justify-content: left;
+              background-color: lightsteelblue;
+          }
+
+
+.divider-salary{
+               background-color: cornflowerblue;
+           }
+
+
+.divider-hours{
+               background-color: grey;
+           }

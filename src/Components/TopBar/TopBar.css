@@ -1,0 +1,57 @@
+
+
+.app-bar {
+           colorPrimary: black;
+           height: 60px;
+           position: relative;
+           left: 0;
+           top: 0;
+       }
+
+
+.top-bar-container {
+                 background-color: blue;
+                 height: 100px;
+                 position: relative;
+                 left: 0;
+                 top: 0;
+             }
+
+
+.flex-container {
+            display: flex;
+            justify-content: left;
+        }
+
+.moulin-logo {
+              width: 45px;
+              background: black;
+          }
+
+
+.employee-button {
+                position: relative;
+                float: left;
+                height: 30px;
+                width: 100px;
+
+            }
+
+
+
+.hamburger-button {
+                 position: absolute;
+                 width: 50px;
+                 background: black;
+                 float: right;
+                 right: 0;
+                 top: 5px;
+             }
+
+
+.title{
+    position: relative;
+    left: 300px;
+    top: 15px;
+}
+
