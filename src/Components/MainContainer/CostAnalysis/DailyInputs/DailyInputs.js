@@ -32,8 +32,9 @@ class DailyInputs extends React.Component {
     };
 
     getDataForInputGrid = async (queryUrlWithDates) => {
-        console.log(queryUrlWithDates);
-        const response = await fetch(queryUrlWithDates);
+        let editableTableQuery=queryUrlWithDates+'&allowTableChanges='+this.props.allowTableChanges;
+        console.log(editableTableQuery);
+        const response = await fetch(editableTableQuery);
         const myJsonData = await response.json();
         if (myJsonData.columns.length !== undefined) {
             this.setState({ columnDefs: myJsonData.columns, rowData: myJsonData.data });

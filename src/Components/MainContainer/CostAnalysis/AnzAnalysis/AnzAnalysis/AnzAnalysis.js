@@ -25,7 +25,6 @@ class AnzAnalysis extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             columnDefs: [
                 { headerName: "Configuration Line", field: "categories" },
@@ -82,6 +81,7 @@ class AnzAnalysis extends React.Component {
 
 
     render() {
+
         return (
             <div className="anz-spending">
                 {(this.state.toggleConfig === true) ? (
@@ -133,7 +133,8 @@ class AnzAnalysis extends React.Component {
                         ) : (null)
                         }
                         <div className='spending-container' style={{ height: '600px', width: '100%' }}>
-                            <AnzGrid toggleConfigFunc={this.toggleConfigFunc.bind(this)} />
+                            <AnzGrid toggleConfigFunc={this.toggleConfigFunc.bind(this)}
+                                     allowConfig={this.props.allowConfig}/>
                         </div>
                     </div>
                 </div>

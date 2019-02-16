@@ -43,6 +43,8 @@ class DailyData extends React.Component {
         console.log(queryUrlWithDates);
         const response = await fetch(queryUrlWithDates);
         const myJsonData = await response.json();
+        console.log(myJsonData);
+
         if (myJsonData.columns.length !== undefined) {
             this.setState({
                 columnDefs: myJsonData.columns,

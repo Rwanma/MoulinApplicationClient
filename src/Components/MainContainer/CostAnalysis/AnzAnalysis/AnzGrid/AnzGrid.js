@@ -97,18 +97,25 @@ class AnzGrid extends React.Component {
     };
 
     render() {
+
+        //alert('allow : ' + this.props.allowConfig);
+
+
         return (
             <div className="anz-spending">
                 <div className='button-container'>
-                    <div className='toggle-button-anz'>
-                        <Button style={{ justifyContent: 'center' }}
-                                variant="contained"
-                                onClick={() => {
-                                    this.props.toggleConfigFunc()
-                                }}>
-                            Toggle Config
-                        </Button>
-                    </div>
+
+                    {(this.props.allowConfig === true) ? (
+                        <div className='toggle-button-anz'>
+                            <Button style={{ justifyContent: 'center' }}
+                                    variant="contained"
+                                    onClick={() => {
+                                        this.props.toggleConfigFunc()
+                                    }}>
+                                Toggle Config
+                            </Button>
+                        </div>
+                        ) : (null)}
 
                     <div className='begin-date-picker'>
                         <DayPickerInput
@@ -147,7 +154,7 @@ class AnzGrid extends React.Component {
                 <div
                     className='ag-theme-balham-dark'
                     style={{
-                        height: '800px',
+                        height: '850px',
                         width: '100%'
                     }}
                 >

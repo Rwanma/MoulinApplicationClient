@@ -132,6 +132,7 @@ class EmployeeHours extends React.Component {
 
                 <div className='divider-hours'>Hours Per Employee</div>
                 <div className='ag-theme-balham-dark' style={{ height: '400px', width: '100%' }}>
+                    {(this.props.allowTableChanges === true) ? (
                     <AgGridReact
                         columnDefs={this.state.columnDefs}
                         rowData={this.state.rowData}
@@ -142,7 +143,13 @@ class EmployeeHours extends React.Component {
                         onCellValueChanged={this.updateGridData}
                         onCellFocused={this.updateCurrentCellValue}
                         onGridReady={this.onGridReady}>
-                    </AgGridReact>
+                    </AgGridReact>) : (
+                        <AgGridReact
+                            columnDefs={this.state.columnDefs}
+                            rowData={this.state.rowData}
+                            enableSorting={true}
+                            enableFilter={true}>
+                        </AgGridReact>)}
                 </div>
                 <div className='divider-salary'>Salary Per Employee</div>
                 <div className='ag-theme-blue' style={{ height: '400px', width: '100%' }}>

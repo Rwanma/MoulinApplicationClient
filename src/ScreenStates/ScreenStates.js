@@ -1,4 +1,3 @@
-
 import Employee from "../Components/MainContainer/Employees/EmployeeEntry/Employee";
 import DailyInputs from "../Components/MainContainer/CostAnalysis/DailyInputs/DailyInputs";
 import EmployeeHours from "../Components/MainContainer/Employees/EmployeeHours/EmployeeHours";
@@ -10,22 +9,36 @@ import DailyData from "../Components/MainContainer/CostAnalysis/DailyData/DailyD
 import React from "react";
 
 class ScreenStates {
-    static ScreenToDisplay(screenToDisplay) {
-        let map = new Map();
+    static screenMap = new Map();
 
-        // Spendings
-        map['Cost Analysis'] = <AnzAnalysis />;
-        map['ANZ Analysis'] = <AnzAnalysis />;
-        map['Daily Inputs'] = <DailyInputs />;
-        map['Daily financial data'] = <DailyData />;
+    static ScreenToDisplay(screenToDisplay, allowTableChange) {
+        this.screenMap.clear();
 
 
-        // Employees
-        map['Employee Entry'] = <Employee />;
-        map['Employees'] = <Employee />;
-        map['Employee Hours'] = <EmployeeHours />;
+        if (allowTableChange === true) {
+            // Spendings
+            this.screenMap['Cost Analysis'] = <AnzAnalysis allowConfig={allowTableChange}/>;
+            this.screenMap['ANZ Analysis'] = <AnzAnalysis allowConfig={allowTableChange}/>;
+            this.screenMap['Daily Inputs'] = <DailyInputs allowTableChanges={allowTableChange} />;
+            this.screenMap['Daily financial data'] = <DailyData />;
 
-        return map[screenToDisplay];
+            // Employees
+            this.screenMap['Employee Entry'] = <Employee />;
+            this.screenMap['Employees'] = <Employee />;
+            this.screenMap['Employee Hours'] = <EmployeeHours allowTableChanges={allowTableChange}/>;
+        }else {
+            // Spendings
+            this.screenMap['Cost Analysis'] = <AnzAnalysis allowConfig={allowTableChange}/>;
+            this.screenMap['ANZ Analysis'] = <AnzAnalysis allowConfig={allowTableChange}/>;
+            this.screenMap['Daily Inputs'] = <DailyInputs allowTableChanges={allowTableChange} />;
+            this.screenMap['Daily financial data'] = <DailyData />;
+
+            // Employees
+            this.screenMap['Employees'] = <EmployeeHours allowTableChanges={allowTableChange} />;
+            this.screenMap['Employee Hours'] = <EmployeeHours allowTableChanges={allowTableChange} />;
+        }
+
+        return this.screenMap[screenToDisplay];
     }
 
 
@@ -37,9 +50,16 @@ class ScreenStates {
         return 'Employees';
     }
 
-    static getListFromTabName(clickedTab) {
-        let spendingDrawerList = ['ANZ Analysis', 'Daily Inputs', 'Daily financial data'];
-        let employeeDrawerList = ['Employee Entry', 'Employee Hours'];
+    static getListFromTabName(clickedTab, allowTableChange) {
+        let spendingDrawerList = [];
+        let employeeDrawerList = [];
+        if (allowTableChange) {
+            spendingDrawerList = ['ANZ Analysis', 'Daily Inputs', 'Daily financial data'];
+            employeeDrawerList = ['Employee Entry', 'Employee Hours'];
+        } else {
+            spendingDrawerList = ['ANZ Analysis', 'Daily Inputs', 'Daily financial data'];
+            employeeDrawerList = ['Employee Hours'];
+        }
 
         if (clickedTab.toUpperCase() === 'COST ANALYSIS' ||
             clickedTab.toUpperCase() === 'DAILY INPUTS' ||
@@ -55,4 +75,3 @@ class ScreenStates {
 
 
 export default ScreenStates;
-

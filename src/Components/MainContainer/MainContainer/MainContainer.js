@@ -10,7 +10,7 @@ class MainContainer extends React.Component {
             <div className="main-container">
                 <div className="main-content">
                     <div className="grid-container" >
-                        {ScreenStates.ScreenToDisplay(this.props.screenDisplayType)}
+                        {ScreenStates.ScreenToDisplay(this.props.screenDisplayType,this.props.allowTableChanges)}
                     </div>
                 </div>
                 <RightSideDrawer openRightDrawer={this.props.openRightDrawer}

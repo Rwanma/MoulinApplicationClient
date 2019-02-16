@@ -3,19 +3,19 @@ import './App.css';
 import MainContainer from "./Components/MainContainer/MainContainer/MainContainer";
 import TopBar from "./Components/TopBar/TopBar";
 import ScreenStates from "./ScreenStates/ScreenStates";
-import LogonScreen from './Components/LogonScreen/LogonScreen'
+import LogonScreen from './Components/LogonScreen/LogonScreen';
 
 
 class App extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             openRightDrawer: false,
             screenDisplay: ScreenStates.getCostAnalysisTabName(),
-            listForDrawer: ScreenStates.getListFromTabName(ScreenStates.getCostAnalysisTabName()),
+            listForDrawer: ScreenStates.getListFromTabName(ScreenStates.getCostAnalysisTabName(), false),
             screenTitle: 'ANZ Analysis',
-            displayApp: false
+            displayApp: false,
+            allowTableChanges: false
         };
 
     }
@@ -28,25 +28,28 @@ class App extends Component {
                 {(this.state.displayApp === false) ? (
                         <LogonScreen verifyLogon={this.verifyLogon.bind(this)} />
                     ) :
-                    (
-                        <div>
-                            <TopBar openRightSideDrawer={this.openRightSideDrawer.bind(this)}
-                                    changeScreenDisplay={this.changeScreenDisplay.bind(this)}
-                                    screenTitle={this.state.screenTitle} />
-                            <MainContainer openRightDrawer={this.state.openRightDrawer}
-                                           listForDrawer={this.state.listForDrawer}
-                                           screenDisplayType={this.state.screenDisplay}
-                                           closeRightSideDrawer={this.closeRightSideDrawer.bind(this)}
-                                           changeScreenDisplay={this.changeScreenDisplay.bind(this)} />
-                        </div>
-                    )}
+                    <div>
+                        <TopBar openRightSideDrawer={this.openRightSideDrawer.bind(this)}
+                                changeScreenDisplay={this.changeScreenDisplay.bind(this)}
+                                screenTitle={this.state.screenTitle} />
+                        <MainContainer openRightDrawer={this.state.openRightDrawer}
+                                       listForDrawer={this.state.listForDrawer}
+                                       screenDisplayType={this.state.screenDisplay}
+                                       allowTableChanges={this.state.allowTableChanges}
+                                       closeRightSideDrawer={this.closeRightSideDrawer.bind(this)}
+                                       changeScreenDisplay={this.changeScreenDisplay.bind(this)} />
+                    </div>
+                }
             </div>
         );
     }
 
+
     verifyLogon(username, password) {
         if (username === 'Marwan' && password === 'Sefian') {
-            this.setState({ displayApp: true });
+            this.setState({ displayApp: true, allowTableChanges: true, listForDrawer: ScreenStates.getListFromTabName(ScreenStates.getCostAnalysisTabName(), true) });
+        } else if (username === 'Sefian' && password === 'Bakas') {
+            this.setState({ displayApp: true, allowTableChanges: false, listForDrawer: ScreenStates.getListFromTabName(ScreenStates.getCostAnalysisTabName(), false) });
         }
         else {
             alert('Wrong username / password')
@@ -72,7 +75,7 @@ class App extends Component {
 
         this.setState({
             screenDisplay: screenToDisplay,
-            listForDrawer: ScreenStates.getListFromTabName(screenToDisplay),
+            listForDrawer: ScreenStates.getListFromTabName(screenToDisplay, this.state.allowTableChanges),
             screenTitle: newScreenTitle
         });
 
