@@ -145,6 +145,9 @@ class DailyInputs extends React.Component {
             case 'Soy Milk Cartons':
                 inputTypeChanged = 'soy_cartons';
                 break;
+            case 'Almond Milk Cartons':
+                inputTypeChanged = 'almond_cartons';
+                break;
             default:
                 console.log('error');
         }
