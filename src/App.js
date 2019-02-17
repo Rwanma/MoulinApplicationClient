@@ -44,17 +44,20 @@ class App extends Component {
         );
     }
 
+    verifyLogon = async (username, password) => {
+        let queryUrl = 'http://localhost:3005/GetLoginRole?login=' + username + '&password=' + password;
+        const response = await fetch(queryUrl);
+        const myJsonData = await response.json();
 
-    verifyLogon(username, password) {
-        if (username === 'Marwan' && password === 'Sefian') {
+        if (myJsonData.role === 'manager') {
             this.setState({ displayApp: true, allowTableChanges: true, listForDrawer: ScreenStates.getListFromTabName(ScreenStates.getCostAnalysisTabName(), true) });
-        } else if (username === 'Sefian' && password === 'Bakas') {
+        } else if (myJsonData.role === 'viewer') {
             this.setState({ displayApp: true, allowTableChanges: false, listForDrawer: ScreenStates.getListFromTabName(ScreenStates.getCostAnalysisTabName(), false) });
         }
         else {
             alert('Wrong username / password')
         }
-    }
+    };
 
 
     openRightSideDrawer() {
