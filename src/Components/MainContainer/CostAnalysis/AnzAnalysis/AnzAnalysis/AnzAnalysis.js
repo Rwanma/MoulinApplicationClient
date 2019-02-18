@@ -11,8 +11,8 @@ import 'react-day-picker/lib/style.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'react-day-picker/lib/style.css';
 import AnzGrid from '../AnzGrid/AnzGrid';
-
 import './AnzAnalysis.css'
+let config = require('../../../../../Config/config-moulin');
 
 const styles = {
     grid: {
@@ -44,7 +44,7 @@ class AnzAnalysis extends React.Component {
 
 
     getAllCategories() {
-        let queryUrl = 'http://localhost:3005/GetAnzConfiguration';
+        let queryUrl = 'http://' + config.server.server_address + ':3005/GetAnzConfiguration';
         this.getCategories(queryUrl);
     }
 
@@ -53,14 +53,14 @@ class AnzAnalysis extends React.Component {
         if (this.state.configLine.trim() === '' || this.state.configLine === undefined) {
             alert('you cannot add an empty configuration line ')
         } else {
-            let addConfigUrl = 'http://localhost:3005/AddAnzConfiguration?&category=' + this.state.configLine;
+            let addConfigUrl = 'http://' + config.server.server_address + ':3005/AddAnzConfiguration?&category=' + this.state.configLine;
             this.getCategories(addConfigUrl);
         }
     };
 
     deleteConfig = params => {
         let configToDelete = this.state.rowData[parseInt(params.split(',')[0].split(' ')[1], 10)].categories;
-        let addConfigUrl = 'http://localhost:3005/DeleteAnzConfiguration?&category=' + configToDelete;
+        let addConfigUrl = 'http://' + config.server.server_address + ':3005/DeleteAnzConfiguration?&category=' + configToDelete;
         this.getCategories(addConfigUrl);
     };
 
@@ -82,17 +82,21 @@ class AnzAnalysis extends React.Component {
 
     render() {
 
+        let serverUploadAnz = 'http://' + config.server.server_address + ':3005/uploadAnzCsv';
+        let serverUploadConfig = 'http://' + config.server.server_address + ':3005/uploadConfigurationCategory';
+
+
         return (
             <div className="anz-spending">
                 {(this.state.toggleConfig === true) ? (
                     <div className='upload-container'>
                         <div className='anz-csv-upload-container'>
                             <p>Upload the ANZ CSV file</p>
-                            <FilePond className='filepond' server='http://localhost:3005/uploadAnzCsv' />
+                            <FilePond className='filepond' server={serverUploadAnz} />
                         </div>
                         <div className='config-csv-upload-container'>
                             <p>Upload the configuration file</p>
-                            <FilePond className='filepond' server='http://localhost:3005/uploadConfigurationCategory'
+                            <FilePond className='filepond' server={serverUploadConfig}
                                       onprocessfile={() => this.getAllCategories()} />
                         </div>
 

@@ -1,6 +1,3 @@
-
-
-
 import * as React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
@@ -15,6 +12,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'ag-grid-community/dist/styles/ag-theme-blue.css';
 import 'react-day-picker/lib/style.css';
 import './EmployeeHours.css'
+let config = require('../../../../Config/config-moulin');
 
 const styles = {
     grid: {
@@ -77,7 +75,7 @@ class EmployeeHours extends React.Component {
                 this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
             } else {
                 this.setState({ errorMessageDates: '' });
-                let queryUrlWithDates = 'http://localhost:3005/GetEmployeeHoursTable?beginDate=' + this.formatDate(date) + '&endDate=' + this.formatDate(this.state.endDate);
+                let queryUrlWithDates = 'http://'+ config.server.server_address+ ':3005/GetEmployeeHoursTable?beginDate=' + this.formatDate(date) + '&endDate=' + this.formatDate(this.state.endDate);
                 this.getDataForEmployeeGrid(queryUrlWithDates);
             }
         } else {
@@ -95,7 +93,7 @@ class EmployeeHours extends React.Component {
                 this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
             } else {
                 this.setState({ errorMessageDates: '' });
-                let queryUrlWithDates = 'http://localhost:3005/GetEmployeeHoursTable?beginDate=' + this.formatDate(this.state.beginDate) + '&endDate=' + this.formatDate(date);
+                let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/GetEmployeeHoursTable?beginDate=' + this.formatDate(this.state.beginDate) + '&endDate=' + this.formatDate(date);
                 this.getDataForEmployeeGrid(queryUrlWithDates);
             }
         } else {
@@ -197,7 +195,7 @@ class EmployeeHours extends React.Component {
             //let rowNode = this.gridApi.getRowNode(this.gridApi.getFocusedCell().rowIndex);
             //rowNode.setDataValue(weirdBugStringDate, this.currentCellValue);
         } else {
-            let queryUrlWithDates = 'http://localhost:3005/UpdateEmployeeHourTable?' +
+            let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/UpdateEmployeeHourTable?' +
                 'beginDate=' + this.formatDate(this.state.beginDate) +
                 '&endDate=' + this.formatDate(this.state.endDate) +
                 '&employeeID=' + employeeID +

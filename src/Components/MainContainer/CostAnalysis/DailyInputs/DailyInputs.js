@@ -11,6 +11,8 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'react-day-picker/lib/style.css';
 import './DailyInputs.css'
+let config = require('../../../../Config/config-moulin');
+
 
 const styles = { grid: { width: '60%' } };
 
@@ -54,7 +56,7 @@ class DailyInputs extends React.Component {
                 this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
             } else {
                 this.setState({ errorMessageDates: '' });
-                let queryUrlWithDates = 'http://localhost:3005/GetDailyInputs?beginDate=' + this.formatDate(date) + '&endDate=' + this.formatDate(this.state.endDate);
+                let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/GetDailyInputs?beginDate=' + this.formatDate(date) + '&endDate=' + this.formatDate(this.state.endDate);
                 this.getDataForInputGrid(queryUrlWithDates);
             }
         } else {
@@ -71,7 +73,7 @@ class DailyInputs extends React.Component {
                 this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
             } else {
                 this.setState({ errorMessageDates: '' });
-                let queryUrlWithDates = 'http://localhost:3005/GetDailyInputs?beginDate=' + this.formatDate(this.state.beginDate) + '&endDate=' + this.formatDate(date);
+                let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/GetDailyInputs?beginDate=' + this.formatDate(this.state.beginDate) + '&endDate=' + this.formatDate(date);
                 this.getDataForInputGrid(queryUrlWithDates);
             }
         } else {
@@ -155,7 +157,7 @@ class DailyInputs extends React.Component {
         if (isNaN(valueChanged) || inputTypeChanged === undefined || inputTypeChanged === 'Total Revenu' || inputTypeChanged === 'Total Milk/Coffee Spending' || inputTypeChanged === 'Total Day Estimate') {
             alert('You cannot use this value for this cell');
         } else {
-            let queryUrl = 'http://localhost:3005/UpdateDailyInputs?' +
+            let queryUrl = 'http://' + config.server.server_address + ':3005/UpdateDailyInputs?' +
                 'workDate=' + weirdBugStringDate +
                 '&typeChanged=' + inputTypeChanged +
                 '&newValue=' + valueChanged +

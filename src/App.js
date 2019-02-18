@@ -4,6 +4,8 @@ import MainContainer from "./Components/MainContainer/MainContainer/MainContaine
 import TopBar from "./Components/TopBar/TopBar";
 import ScreenStates from "./ScreenStates/ScreenStates";
 import LogonScreen from './Components/LogonScreen/LogonScreen';
+let config = require('./Config/config-moulin');
+
 
 
 class App extends Component {
@@ -17,7 +19,6 @@ class App extends Component {
             displayApp: false,
             allowTableChanges: false
         };
-
     }
 
     screenDisplayType = '';
@@ -45,7 +46,7 @@ class App extends Component {
     }
 
     verifyLogon = async (username, password) => {
-        let queryUrl = 'http://localhost:3005/GetLoginRole?login=' + username + '&password=' + password;
+        let queryUrl = 'http://' + config.server.server_address + ':3005/GetLoginRole?login=' + username + '&password=' + password;
         const response = await fetch(queryUrl);
         const myJsonData = await response.json();
 

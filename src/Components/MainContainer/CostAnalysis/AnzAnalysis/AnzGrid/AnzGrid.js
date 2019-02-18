@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
@@ -15,6 +14,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import './AnzGrid.css'
 import Button from "@material-ui/core/Button/Button";
+let config = require('../../../../../Config/config-moulin');
+
 
 const styles = {
     grid: {
@@ -44,7 +45,7 @@ class AnzGrid extends React.Component {
     };
 
     getDataForSpendingGrid = async (beginDate, endDate, useFilter) => {
-        let queryUrlWithDates = 'http://localhost:3005/getAnzSpending?beginDate=' + this.formatDate(beginDate) + '&endDate=' + this.formatDate(endDate) +
+        let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/getAnzSpending?beginDate=' + this.formatDate(beginDate) + '&endDate=' + this.formatDate(endDate) +
             '&useFilter=' + useFilter;
         console.log(queryUrlWithDates);
         const response = await fetch(queryUrlWithDates);

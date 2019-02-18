@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
@@ -12,6 +11,9 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'react-day-picker/lib/style.css';
 import './DailyData.css'
+let config = require('../../../../Config/config-moulin');
+
+
 
 const styles = {
     grid: {
@@ -39,7 +41,7 @@ class DailyData extends React.Component {
     };
 
     getDataForSpendingGrid = async (beginDate, endDate) => {
-        let queryUrlWithDates = 'http://localhost:3005/getFinancialDailyData?beginDate=' + this.formatDate(beginDate) + '&endDate=' + this.formatDate(endDate);
+        let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/getFinancialDailyData?beginDate=' + this.formatDate(beginDate) + '&endDate=' + this.formatDate(endDate);
         console.log(queryUrlWithDates);
         const response = await fetch(queryUrlWithDates);
         const myJsonData = await response.json();
