@@ -156,6 +156,9 @@ class DailyInputs extends React.Component {
 
         if (isNaN(valueChanged) || inputTypeChanged === undefined || inputTypeChanged === 'Total Revenu' || inputTypeChanged === 'Total Milk/Coffee Spending' || inputTypeChanged === 'Total Day Estimate') {
             alert('You cannot use this value for this cell');
+            let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/GetDailyInputs?beginDate=' + this.formatDate(this.state.beginDate) +
+                '&endDate=' + this.formatDate(this.state.endDate);
+            this.getDataForInputGrid(queryUrlWithDates);
         } else {
             let queryUrl = 'http://' + config.server.server_address + ':3005/UpdateDailyInputs?' +
                 'workDate=' + weirdBugStringDate +

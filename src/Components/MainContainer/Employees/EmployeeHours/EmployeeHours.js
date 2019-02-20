@@ -29,13 +29,14 @@ class EmployeeHours extends React.Component {
             rowData: [],
             beginDate: new Date(),
             endDate: new Date(),
-            errorMessageDates: 'Choose a date range'
+            errorMessageDates: 'Choose a date range',
+            sortable: false
         };
 
         this.defaultColDef = {
             editable: true,
-            sortable: true,
-            filter: true
+            filter: true,
+            sortable: false
         };
         this.currentCellValue = '';
     }
@@ -103,10 +104,8 @@ class EmployeeHours extends React.Component {
 
 
     render() {
-
         return (
             <div className="anz-spending">
-
                 <div className='button-container'>
 
                     <DayPickerInput
@@ -115,7 +114,6 @@ class EmployeeHours extends React.Component {
                         placeholder={`${formatDate(new Date(), 'll')}`}
                         onDayChange={this.handleBeginDayChange.bind(this)}
                     />
-
                     <DayPickerInput
                         formatDate={formatDate}
                         parseDate={parseDate}
@@ -171,7 +169,6 @@ class EmployeeHours extends React.Component {
             this.currentCellValue = this.state.rowData[rowIndex][columnId];
             console.log('currentCellValue : ' + this.currentCellValue);
         }
-
     };
 
     onGridReady = params => {
@@ -191,9 +188,10 @@ class EmployeeHours extends React.Component {
         let employeeIdValue = this.state.rowData[rowIndex]['Employee Id'];
 
         if (isNaN(hoursChanged) || employeeIdValue === 'Total Hours' || employeeIdValue === 'Total Payment') {
-            alert('You need to enter a number, either reload the page to get the previous value back or update the cell: ' + hoursChanged);
-            //let rowNode = this.gridApi.getRowNode(this.gridApi.getFocusedCell().rowIndex);
-            //rowNode.setDataValue(weirdBugStringDate, this.currentCellValue);
+            alert('You cannot use this value for this cell');
+            let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/GetEmployeeHoursTable?beginDate=' + this.formatDate(this.state.beginDate) +
+                '&endDate=' + this.formatDate(this.state.endDate);
+            this.getDataForEmployeeGrid(queryUrlWithDates);
         } else {
             let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/UpdateEmployeeHourTable?' +
                 'beginDate=' + this.formatDate(this.state.beginDate) +
