@@ -29,6 +29,7 @@ class DailyData extends React.Component {
             columnDefs: [],
             rowDataReal: [],
             rowDataEstimate: [],
+            rowDataRealAverage: [],
             beginDate: new Date(),
             endDate: new Date(),
             errorMessageDates: 'Choose a date range'
@@ -51,7 +52,8 @@ class DailyData extends React.Component {
             this.setState({
                 columnDefs: myJsonData.columns,
                 rowDataReal: myJsonData.dataReal,
-                rowDataEstimate: myJsonData.dataEstimate
+                rowDataEstimate: myJsonData.dataEstimate,
+                rowDataRealAverage: myJsonData.dataAverageReal
             });
         }
         else {
@@ -119,7 +121,7 @@ class DailyData extends React.Component {
                     </div>
                 </div>
                 <div className='divider-hours'>Daily Real Revenue</div>
-                <div className='ag-theme-balham-dark' style={{ height: '300px', width: '100%' }}>
+                <div className='ag-theme-balham-dark' style={{ height: '200px', width: '100%' }}>
                     <AgGridReact
                         columnDefs={this.state.columnDefs}
                         rowData={this.state.rowDataReal}
@@ -128,8 +130,17 @@ class DailyData extends React.Component {
                         onGridReady={this.onGridReady}>
                     </AgGridReact>
                 </div>
-                <div className='divider-salary'>Daily Estimate Revenue</div>
-                <div className='ag-theme-blue' style={{ height: '300px', width: '100%' }}>
+                <div className='divider-salary'>Daily Real Revenue(Average)</div>
+                <div className='ag-theme-blue' style={{ height: '200px', width: '100%' }}>
+                    <AgGridReact
+                        columnDefs={this.state.columnDefs}
+                        rowData={this.state.rowDataRealAverage}
+                        enableSorting={true}
+                        enableFilter={true}>
+                    </AgGridReact>
+                </div>
+                <div className='divider-hours'>Daily Estimate Revenue</div>
+                <div className='ag-theme-balham-dark' style={{ height: '200px', width: '100%' }}>
                     <AgGridReact
                         columnDefs={this.state.columnDefs}
                         rowData={this.state.rowDataEstimate}
