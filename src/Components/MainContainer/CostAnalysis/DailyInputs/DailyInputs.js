@@ -111,7 +111,7 @@ class DailyInputs extends React.Component {
                         enableSorting={true}
                         enableFilter={true}
                         onGridReady={this.onGridReady}
-                        onCellValueChanged={this.updateGridData}
+                        onCellEditingStopped={this.updateGridData}
                     >
                     </AgGridReact>
                 </div>

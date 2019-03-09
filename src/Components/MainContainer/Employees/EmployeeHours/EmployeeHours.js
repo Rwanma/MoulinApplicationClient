@@ -136,7 +136,7 @@ class EmployeeHours extends React.Component {
                         enableFilter={true}
                         defaultColDef={this.defaultColDef}
                         getRowNodeId={this.state.getRowNodeId}
-                        onCellValueChanged={this.updateGridData}
+                        onCellEditingStopped={this.updateGridData}
                         onCellFocused={this.updateCurrentCellValue}
                         onGridReady={this.onGridReady}>
                     </AgGridReact>) : (
