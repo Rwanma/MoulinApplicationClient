@@ -24,14 +24,16 @@ const styles = {
 
 class DailyData extends React.Component {
     constructor(props) {
+        let todayDate= new Date();
+        todayDate.setHours(0,0,0,0);
         super(props);
         this.state = {
             columnDefs: [],
             rowDataReal: [],
             rowDataEstimate: [],
             rowDataRealAverage: [],
-            beginDate: new Date(),
-            endDate: new Date(),
+            beginDate: todayDate,
+            endDate: todayDate,
             errorMessageDates: 'Choose a date range'
         };
     }
@@ -46,7 +48,6 @@ class DailyData extends React.Component {
         console.log(queryUrlWithDates);
         const response = await fetch(queryUrlWithDates);
         const myJsonData = await response.json();
-        console.log(myJsonData);
 
         if (myJsonData.columns.length !== undefined) {
             this.setState({

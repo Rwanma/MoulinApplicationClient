@@ -18,12 +18,14 @@ const styles = { grid: { width: '60%' } };
 
 class DailyInputs extends React.Component {
     constructor(props) {
+        let todayDate= new Date();
+        todayDate.setHours(0,0,0,0);
         super(props);
         this.state = {
             columnDefs: [],
             rowData: [],
-            beginDate: new Date(),
-            endDate: new Date(),
+            beginDate: todayDate,
+            endDate: todayDate,
             errorMessageDates: 'Choose a date range'
         };
     }
@@ -34,8 +36,7 @@ class DailyInputs extends React.Component {
     };
 
     getDataForInputGrid = async (queryUrlWithDates) => {
-        let editableTableQuery=queryUrlWithDates+'&allowTableChanges='+this.props.allowTableChanges;
-        console.log(editableTableQuery);
+        let editableTableQuery = queryUrlWithDates + '&allowTableChanges=' + this.props.allowTableChanges;
         const response = await fetch(editableTableQuery);
         const myJsonData = await response.json();
         if (myJsonData.columns.length !== undefined) {
@@ -112,6 +113,7 @@ class DailyInputs extends React.Component {
                         enableFilter={true}
                         onGridReady={this.onGridReady}
                         onCellEditingStopped={this.updateGridData}
+                        tabToNextCell={this.tabToNextCell}
                     >
                     </AgGridReact>
                 </div>
@@ -120,6 +122,10 @@ class DailyInputs extends React.Component {
         );
     }
 
+
+    tabToNextCell(params) {
+        return null;
+    }
 
     updateGridData = async params => {
         this.gridApi = params.api;
@@ -130,6 +136,8 @@ class DailyInputs extends React.Component {
 
         let inputTypeChanged = this.state.rowData[this.gridApi.getFocusedCell().rowIndex]['Daily Input'];
         let valueChanged = this.state.rowData[this.gridApi.getFocusedCell().rowIndex][weirdBugStringDate];
+
+
 
         switch (inputTypeChanged) {
             case 'Cash Revenu':
@@ -154,7 +162,13 @@ class DailyInputs extends React.Component {
                 console.log('error');
         }
 
-        if (isNaN(valueChanged) || inputTypeChanged === undefined || inputTypeChanged === 'Total Revenu' || inputTypeChanged === 'Total Milk/Coffee Spending' || inputTypeChanged === 'Total Day Estimate') {
+        if (valueChanged === '' || valueChanged === undefined || valueChanged === null) {
+            valueChanged = 0;
+        }
+
+        if (isNaN(valueChanged) ||
+            inputTypeChanged === undefined || inputTypeChanged === 'Total Revenu' ||
+            inputTypeChanged === 'Total Milk/Coffee Spending' || inputTypeChanged === 'Total Day Estimate') {
             alert('You cannot use this value for this cell');
             let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/GetDailyInputs?beginDate=' + this.formatDate(this.state.beginDate) +
                 '&endDate=' + this.formatDate(this.state.endDate);

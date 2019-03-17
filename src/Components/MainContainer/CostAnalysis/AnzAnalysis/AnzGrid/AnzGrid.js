@@ -26,12 +26,14 @@ const styles = {
 
 class AnzGrid extends React.Component {
     constructor(props) {
+        let todayDate= new Date();
+        todayDate.setHours(0,0,0,0);
         super(props);
         this.state = {
             columnDefs: [],
             rowData: [],
-            beginDate: new Date(),
-            endDate: new Date(),
+            beginDate: todayDate,
+            endDate: todayDate,
             useFilter: true,
             errorMessageDates: 'Choose a date range'
         };

@@ -23,12 +23,14 @@ const styles = {
 
 class EmployeeHours extends React.Component {
     constructor(props) {
+        let todayDate= new Date();
+        todayDate.setHours(0,0,0,0);
         super(props);
         this.state = {
             columnDefs: [],
             rowData: [],
-            beginDate: new Date(),
-            endDate: new Date(),
+            beginDate: todayDate,
+            endDate: todayDate,
             errorMessageDates: 'Choose a date range',
             sortable: false
         };
@@ -38,7 +40,6 @@ class EmployeeHours extends React.Component {
             filter: true,
             sortable: false
         };
-        this.currentCellValue = '';
     }
 
     formatDate(datum) {
@@ -61,9 +62,6 @@ class EmployeeHours extends React.Component {
         else {
             this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
         }
-
-        console.log(myJsonData.columns);
-        console.log(this.state.columnDefs);
     };
 
 
@@ -76,7 +74,7 @@ class EmployeeHours extends React.Component {
                 this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
             } else {
                 this.setState({ errorMessageDates: '' });
-                let queryUrlWithDates = 'http://'+ config.server.server_address+ ':3005/GetEmployeeHoursTable?beginDate=' + this.formatDate(date) + '&endDate=' + this.formatDate(this.state.endDate);
+                let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/GetEmployeeHoursTable?beginDate=' + this.formatDate(date) + '&endDate=' + this.formatDate(this.state.endDate);
                 this.getDataForEmployeeGrid(queryUrlWithDates);
             }
         } else {
@@ -88,7 +86,6 @@ class EmployeeHours extends React.Component {
         if (day !== undefined) {
             let date = new Date((day.getMonth() + 1) + '/' + day.getDate() + '/' + day.getFullYear());
             this.setState({ endDate: date });
-
             if (this.state.beginDate > date) {
                 this.setState({ errorMessageDates: 'end date should be after begin date' });
                 this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
@@ -129,17 +126,17 @@ class EmployeeHours extends React.Component {
                 <div className='divider-hours'>Hours Per Employee</div>
                 <div className='ag-theme-balham-dark' style={{ height: '400px', width: '100%' }}>
                     {(this.props.allowTableChanges === true) ? (
-                    <AgGridReact
-                        columnDefs={this.state.columnDefs}
-                        rowData={this.state.rowData}
-                        enableSorting={true}
-                        enableFilter={true}
-                        defaultColDef={this.defaultColDef}
-                        getRowNodeId={this.state.getRowNodeId}
-                        onCellEditingStopped={this.updateGridData}
-                        onCellFocused={this.updateCurrentCellValue}
-                        onGridReady={this.onGridReady}>
-                    </AgGridReact>) : (
+                        <AgGridReact
+                            columnDefs={this.state.columnDefs}
+                            rowData={this.state.rowData}
+                            enableSorting={true}
+                            enableFilter={true}
+                            defaultColDef={this.defaultColDef}
+                            getRowNodeId={this.state.getRowNodeId}
+                            tabToNextCell={this.tabToNextCell}
+                            onCellEditingStopped={this.updateGridData.bind(this)}
+                            onGridReady={this.onGridReady}>
+                        </AgGridReact>) : (
                         <AgGridReact
                             columnDefs={this.state.columnDefs}
                             rowData={this.state.rowData}
@@ -161,15 +158,9 @@ class EmployeeHours extends React.Component {
         );
     }
 
-    updateCurrentCellValue = params => {
-        this.gridApi = params.api;
-        if (this.gridApi.getFocusedCell() != null) {
-            let columnId = this.gridApi.getFocusedCell().column.colId;
-            let rowIndex = this.gridApi.getFocusedCell().rowIndex;
-            this.currentCellValue = this.state.rowData[rowIndex][columnId];
-            console.log('currentCellValue : ' + this.currentCellValue);
-        }
-    };
+    tabToNextCell(params) {
+        return null;
+    }
 
     onGridReady = params => {
         params.api.sizeColumnsToFit();
@@ -186,6 +177,15 @@ class EmployeeHours extends React.Component {
         let employeeID = this.state.rowData[rowIndex]['Employee Id'];
         let hoursChanged = this.state.rowData[rowIndex][weirdBugStringDate];
         let employeeIdValue = this.state.rowData[rowIndex]['Employee Id'];
+        let paymentType = this.state.rowData[rowIndex]['Payment Type'];
+
+        console.log('updateGridData rowIndex : ' + rowIndex + ' employeeID : ' +
+            employeeID + ' hoursChanged : ' + hoursChanged + ' employeeIdValue : '
+            + employeeIdValue + ' paymentType : ' + paymentType + ' this.currentCellValue : ' + this.currentCellValue);
+
+        if (hoursChanged === '' || hoursChanged === undefined) {
+            hoursChanged = 0;
+        }
 
         if (isNaN(hoursChanged) || employeeIdValue === 'Total Hours' || employeeIdValue === 'Total Payment') {
             alert('You cannot use this value for this cell');
@@ -198,7 +198,7 @@ class EmployeeHours extends React.Component {
                 '&endDate=' + this.formatDate(this.state.endDate) +
                 '&employeeID=' + employeeID +
                 '&dateSelected=' + weirdBugStringDate +
-                '&paymentType=' + this.state.rowData[rowIndex]['Payment Type'] +
+                '&paymentType=' + paymentType +
                 '&hoursChanged=' + hoursChanged;
             this.getDataForEmployeeGrid(queryUrlWithDates);
         }
