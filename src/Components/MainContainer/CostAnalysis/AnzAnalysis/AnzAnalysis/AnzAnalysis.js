@@ -11,12 +11,14 @@ import 'react-day-picker/lib/style.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'react-day-picker/lib/style.css';
 import AnzGrid from '../AnzGrid/AnzGrid';
+import AnzConfig from '../AnzConfig/AnzConfig';
+
 import './AnzAnalysis.css'
 let config = require('../../../../../Config/config-moulin');
 
 const styles = {
     grid: {
-        width: '30%',
+        width: '100%',
     },
 };
 
@@ -123,16 +125,7 @@ class AnzAnalysis extends React.Component {
                     <div className='grid-divs'>
                         {(this.state.toggleConfig === true) ? (
                             <div className='ag-theme-blue' style={{ height: '850px', width: '30%' }}>
-                                <AgGridReact columnDefs={this.state.columnDefs}
-                                             rowData={this.state.rowData}
-                                             enableSorting={true}
-                                             enableFilter={true}
-                                             context={this.state.context}
-                                             frameworkComponents={this.state.frameworkComponents}
-                                             onGridReady={this.onGridReady}
-
-                                >
-                                </AgGridReact>
+                                <AnzConfig/>
                             </div>
                         ) : (null)
                         }

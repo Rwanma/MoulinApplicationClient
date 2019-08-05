@@ -1,0 +1,19 @@
+.begin-date-picker-real{
+    position: relative;
+    left: 10px;
+    bottom: 1px;
+
+}
+
+
+.end-date-picker-real{
+    position: relative;
+    left: 20px;
+    bottom: 1px;
+}
+
+.error-message{
+    position: relative;
+    top: 0px;
+    left: 25px;
+}

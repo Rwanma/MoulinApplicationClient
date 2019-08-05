@@ -22,6 +22,7 @@
     "filepond-plugin-image-exif-orientation": "^1.0.3",
     "filepond-plugin-image-preview": "^3.1.6",
     "gigatables-react": "^2.9.2",
+    "jqwidgets-framework": "^8.1.4",
     "material-ui-pickers": "^2.1.1",
     "moment": "^2.23.0",
     "mui-datatables": "^2.0.0-beta-41",

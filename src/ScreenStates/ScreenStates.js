@@ -21,6 +21,8 @@ class ScreenStates {
             this.screenMap['ANZ Analysis'] = <AnzAnalysis allowConfig={allowTableChange}/>;
             this.screenMap['Daily Inputs'] = <DailyInputs allowTableChanges={allowTableChange} />;
             this.screenMap['Daily financial data'] = <DailyData />;
+            this.screenMap['RECAP'] = <DailyData/>;
+
 
             // Employees
             this.screenMap['Employee Entry'] = <Employee />;
@@ -54,7 +56,7 @@ class ScreenStates {
         let spendingDrawerList = [];
         let employeeDrawerList = [];
         if (allowTableChange) {
-            spendingDrawerList = ['ANZ Analysis', 'Daily Inputs', 'Daily financial data'];
+            spendingDrawerList = ['ANZ Analysis', 'Daily Inputs', 'Daily financial data', 'RECAP'];
             employeeDrawerList = ['Employee Entry', 'Employee Hours'];
         } else {
             spendingDrawerList = ['ANZ Analysis', 'Daily Inputs', 'Daily financial data'];
