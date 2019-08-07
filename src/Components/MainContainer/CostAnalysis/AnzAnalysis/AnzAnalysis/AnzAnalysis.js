@@ -123,12 +123,6 @@ class AnzAnalysis extends React.Component {
 
                 <div className='active-div-container'>
                     <div className='grid-divs'>
-                        {(this.state.toggleConfig === true) ? (
-                            <div className='ag-theme-blue' style={{ height: '850px', width: '30%' }}>
-                                <AnzConfig/>
-                            </div>
-                        ) : (null)
-                        }
                         <div className='spending-container' style={{ height: '600px', width: '100%' }}>
                             <AnzGrid toggleConfigFunc={this.toggleConfigFunc.bind(this)}
                                      allowConfig={this.props.allowConfig}/>

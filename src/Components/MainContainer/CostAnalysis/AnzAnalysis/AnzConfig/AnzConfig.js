@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {withStyles} from "@material-ui/core/styles/index";
+import { withStyles } from "@material-ui/core/styles/index";
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { AgGridReact } from 'ag-grid-react';
@@ -29,7 +29,8 @@ class AnzConfig extends React.Component {
             frameworkComponents: { gridButtonRenderer: GridButtonRenderer },
             selectedFile: '',
             loaded: 0,
-            toggleConfig: false
+            toggleConfig: false,
+            dialogueOpen: true
         };
         this.getAllCategories();
 
@@ -51,26 +52,28 @@ class AnzConfig extends React.Component {
     };
 
 
+
+
     render() {
         return (
 
-        <Dialog aria-labelledby="simple-dialog-title" open={true}>
-            <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
-            <div className='ag-theme-blue' style={{ height: '850px', width: '100%' }}>
+            <Dialog onClose={this.props.onConfigClose} aria-labelledby="simple-dialog-title" open={this.props.openConfig}>
+                <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
+                <div className='ag-theme-blue' style={{ height: '850px', width: '100%' }}>
 
-            <AgGridReact columnDefs={this.state.columnDefs}
-                         rowData={this.state.rowData}
-                         enableSorting={true}
-                         enableFilter={true}
-                         context={this.state.context}
-                         frameworkComponents={this.state.frameworkComponents}
-                         onGridReady={this.onGridReady}
+                    <AgGridReact columnDefs={this.state.columnDefs}
+                                 rowData={this.state.rowData}
+                                 enableSorting={true}
+                                 enableFilter={true}
+                                 context={this.state.context}
+                                 frameworkComponents={this.state.frameworkComponents}
+                                 onGridReady={this.onGridReady}
 
-            >
-            </AgGridReact>
-            </div>
+                    >
+                    </AgGridReact>
+                </div>
 
-        </Dialog>
+            </Dialog>
 
         );
     }

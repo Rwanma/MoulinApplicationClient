@@ -14,7 +14,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import './AnzGrid.css'
 import Button from "@material-ui/core/Button/Button";
+import AnzConfig from '../AnzConfig/AnzConfig';
 let config = require('../../../../../Config/config-moulin');
+
 
 
 const styles = {
@@ -35,7 +37,8 @@ class AnzGrid extends React.Component {
             beginDate: todayDate,
             endDate: todayDate,
             useFilter: true,
-            errorMessageDates: 'Choose a date range'
+            errorMessageDates: 'Choose a date range',
+            openConfig: false
         };
 
 
@@ -99,6 +102,15 @@ class AnzGrid extends React.Component {
         this.setState({ useFilter: !this.state.useFilter });
     };
 
+
+    showConfig() {
+        this.setState({ openConfig: true });
+    }
+
+    handleConfigClose = () => {
+        this.setState({ openConfig: false });
+    };
+
     render() {
 
         //alert('allow : ' + this.props.allowConfig);
@@ -112,9 +124,7 @@ class AnzGrid extends React.Component {
                         <div className='toggle-button-anz'>
                             <Button style={{ justifyContent: 'center' }}
                                     variant="contained"
-                                    onClick={() => {
-                                        this.props.toggleConfigFunc()
-                                    }}>
+                                    onClick={this.showConfig.bind(this)}>
                                 Toggle Config
                             </Button>
                         </div>
@@ -168,6 +178,8 @@ class AnzGrid extends React.Component {
                         enableFilter={true}
                         onGridReady={this.onGridReady}>
                     </AgGridReact>
+                    <AnzConfig openConfig={this.state.openConfig}
+                               onConfigClose={this.handleConfigClose} />
                 </div>
             </div>
 
