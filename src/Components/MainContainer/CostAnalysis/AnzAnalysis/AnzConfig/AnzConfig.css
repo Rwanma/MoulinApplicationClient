@@ -1,0 +1,7 @@
+.upload-container{
+    background-color: lightsteelblue;
+    display: flex;
+    justify-content: left;
+    border: 1px solid black;
+
+}

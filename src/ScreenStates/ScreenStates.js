@@ -2,6 +2,8 @@ import Employee from "../Components/MainContainer/Employees/EmployeeEntry/Employ
 import DailyInputs from "../Components/MainContainer/CostAnalysis/DailyInputs/DailyInputs";
 import EmployeeHours from "../Components/MainContainer/Employees/EmployeeHours/EmployeeHours";
 import AnzAnalysis from "../Components/MainContainer/CostAnalysis/AnzAnalysis/AnzAnalysis/AnzAnalysis";
+import AnzGrid from "../Components/MainContainer/CostAnalysis/AnzAnalysis/AnzGrid/AnzGrid";
+
 import DailyData from "../Components/MainContainer/CostAnalysis/DailyData/DailyData";
 
 
@@ -17,8 +19,8 @@ class ScreenStates {
 
         if (allowTableChange === true) {
             // Spendings
-            this.screenMap['Cost Analysis'] = <AnzAnalysis allowConfig={allowTableChange}/>;
-            this.screenMap['ANZ Analysis'] = <AnzAnalysis allowConfig={allowTableChange}/>;
+            this.screenMap['Cost Analysis'] = <AnzGrid allowConfig={allowTableChange}/>;
+            this.screenMap['ANZ Analysis'] = <AnzGrid allowConfig={allowTableChange}/>;
             this.screenMap['Daily Inputs'] = <DailyInputs allowTableChanges={allowTableChange} />;
             this.screenMap['Daily financial data'] = <DailyData />;
             this.screenMap['RECAP'] = <DailyData/>;
@@ -30,8 +32,8 @@ class ScreenStates {
             this.screenMap['Employee Hours'] = <EmployeeHours allowTableChanges={allowTableChange}/>;
         }else {
             // Spendings
-            this.screenMap['Cost Analysis'] = <AnzAnalysis allowConfig={allowTableChange}/>;
-            this.screenMap['ANZ Analysis'] = <AnzAnalysis allowConfig={allowTableChange}/>;
+            this.screenMap['Cost Analysis'] = <AnzGrid allowConfig={allowTableChange}/>;
+            this.screenMap['ANZ Analysis'] = <AnzGrid allowConfig={allowTableChange}/>;
             this.screenMap['Daily Inputs'] = <DailyInputs allowTableChanges={allowTableChange} />;
             this.screenMap['Daily financial data'] = <DailyData />;
 
