@@ -1,9 +1,8 @@
-
 import * as React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import GridButtonRenderer from '../../../../../Components/HomemadeComponents/GridButtonRenderer.js';
+import GridButtonRenderer from '../../../../HomemadeComponents/GridButtonRenderer/GridButtonRenderer.js';
 import Button from "@material-ui/core/Button/Button";
 import TextField from '@material-ui/core/TextField';
 import { FilePond } from 'react-filepond';
@@ -73,7 +72,7 @@ class AnzAnalysis extends React.Component {
     };
 
 
-    handleConfigLineChange = event => {
+    handleFilterLineChange = event => {
         this.setState({ configLine: event.target.value });
     };
 
@@ -107,7 +106,7 @@ class AnzAnalysis extends React.Component {
                                 id="configLine"
                                 label="Configuration line"
                                 className='text-field'
-                                onChange={this.handleConfigLineChange}
+                                onChange={this.handleFilterLineChange}
                                 margin="normal" />
                             <div className='add-config-button'>
                                 <Button style={{ justifyContent: 'center' }}
@@ -125,7 +124,7 @@ class AnzAnalysis extends React.Component {
                     <div className='grid-divs'>
                         <div className='spending-container' style={{ height: '600px', width: '100%' }}>
                             <AnzGrid toggleConfigFunc={this.toggleConfigFunc.bind(this)}
-                                     allowConfig={this.props.allowConfig}/>
+                                     allowConfig={this.props.allowConfig} />
                         </div>
                     </div>
                 </div>

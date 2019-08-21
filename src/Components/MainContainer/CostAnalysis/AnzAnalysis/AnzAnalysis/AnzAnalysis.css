@@ -1,32 +1,4 @@
 
-.config-add {
-              display: flex;
-
-              height: 80px;
-              position: relative
-          }
-
-.filepond {
-    position: relative;
-    top: 0px;
-    width: 200px;
-}
-
-
-.text-field{
-            position: relative;
-            left: 50px;
-            top: 65px;
-        }
-
-
-.add-config-button{
-                    position: relative;
-                    left: 35px;
-                    top: 90px;
-                    width: 100px;
-                    height: 30px;
-                }
 
 .toggle-button{
               width: 200px;
@@ -34,13 +6,6 @@
           }
 
 
-.upload-container{
-              background-color: lightsteelblue;
-              display: flex;
-              justify-content: left;
-              border: 1px solid black;
-
-          }
 
 
 .grid-divs{
@@ -53,4 +18,3 @@
                              position: relative;
                              left: 20px;
                          }
-
