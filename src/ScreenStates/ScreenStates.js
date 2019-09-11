@@ -2,10 +2,7 @@ import React from "react";
 
 
 class ScreenStates  extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+    
     static formatDate(datum) {
         let date = new Date(datum);
         return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();

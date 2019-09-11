@@ -38,7 +38,6 @@ class AnzConfig extends React.Component {
 
             // Text fields
             filterLine: '', categoryLine: '',
-
             context: { componentParent: this },
             frameworkButtonComponents: { gridButtonRenderer: GridButtonRenderer },
         };
@@ -49,6 +48,8 @@ class AnzConfig extends React.Component {
     onGridReady = params => {
         params.api.sizeColumnsToFit();
     };
+
+
 
     //***************** Load filter grid ***********************************
     loadConfigData() {
@@ -63,26 +64,13 @@ class AnzConfig extends React.Component {
         this.setState({
                 columnDefsFilters: [
                     { headerName: "Filter", field: "filter" },
-                    {
-                        headerName: "Category",
-                        field: "category",
-                        width: 200,
-                        cellEditor: "agSelectCellEditor",
-                        editable: true,
-                        cellEditorParams: {
-                            values: myJsonData.combo_box_categories
-                        }
-                    },
+                    { headerName: "Category", field: "category", width: 200, cellEditor: "agSelectCellEditor", editable: true, cellEditorParams: { values: myJsonData.combo_box_categories } },
                     { headerName: "Delete filter", field: "deleteButton", cellRenderer: "gridButtonRenderer" }
                 ],
                 rowDataFilters: myJsonData.spendingFilters,
                 rowDataCategory: myJsonData.categories
-
-            }
-        );
+            });
     };
-
-
 
 
 
@@ -95,9 +83,6 @@ class AnzConfig extends React.Component {
             this.queryServerForConfigData(addFilterUrl);
         }
     };
-
-
-
 
     handleFilterLineChange = event => {
         this.setState({ filterLine: event.target.value });
@@ -115,6 +100,12 @@ class AnzConfig extends React.Component {
         }
     };
 
+    deleteCategory = params => {
+        let configToDelete = this.state.rowDataCategory[parseInt(params.split(',')[0].split(' ')[1], 10)].category;
+        let deleteConfigUrl = 'http://' + config.server.server_address + ':3005/deletecategory?&category=' + configToDelete;
+        console.log(deleteConfigUrl);
+        this.queryServerForConfigData(deleteConfigUrl);
+    };
 
 
     handleCategoryLineChange = event => {

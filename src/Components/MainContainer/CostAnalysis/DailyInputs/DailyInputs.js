@@ -15,10 +15,6 @@ import './DailyInputs.css'
 const styles = { grid: { width: '60%' } };
 
 class DailyInputs extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
 
     updateGridData = async params => {
         this.gridApi = params.api;
