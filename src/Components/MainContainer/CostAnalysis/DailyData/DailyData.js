@@ -1,19 +1,22 @@
 import * as React from 'react';
-import { AgGridReact } from 'ag-grid-react';
+import {AgGridReact} from 'ag-grid-react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
-import { formatDate, parseDate, } from 'react-day-picker/moment';
+import {formatDate, parseDate,} from 'react-day-picker/moment';
 import 'date-fns';
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'react-day-picker/lib/style.css';
 import './DailyData.css'
+import 'jqwidgets-scripts/jqwidgets/styles/jqx.base.css';
+import 'jqwidgets-scripts/jqwidgets/styles/jqx.darkblue.css';
+import 'jqwidgets-scripts/jqwidgets/styles/jqx.energyblue.css';
+import JqxGrid, {IGridProps, jqx} from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxgrid';
+
 let config = require('../../../../Config/config-moulin');
-
-
 
 const styles = {
     grid: {
@@ -21,126 +24,47 @@ const styles = {
     },
 };
 
-
 class DailyData extends React.Component {
     constructor(props) {
-        let todayDate= new Date();
-        todayDate.setHours(0,0,0,0);
         super(props);
-        this.state = {
-            columnDefs: [],
-            rowDataReal: [],
-            rowDataEstimate: [],
-            rowDataRealAverage: [],
-            beginDate: todayDate,
-            endDate: todayDate,
-            errorMessageDates: 'Choose a date range'
-        };
     }
-
-    formatDate(datum) {
-        let date = new Date(datum);
-        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-    };
-
-    getDataForSpendingGrid = async (beginDate, endDate) => {
-        let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/getFinancialDailyData?beginDate=' + this.formatDate(beginDate) + '&endDate=' + this.formatDate(endDate);
-        console.log(queryUrlWithDates);
-        const response = await fetch(queryUrlWithDates);
-        const myJsonData = await response.json();
-
-        if (myJsonData.columns.length !== undefined) {
-            this.setState({
-                columnDefs: myJsonData.columns,
-                rowDataReal: myJsonData.dataReal,
-                rowDataEstimate: myJsonData.dataEstimate,
-                rowDataRealAverage: myJsonData.dataAverageReal
-            });
-        }
-        else {
-            this.setState({ columnDefs: [], rowData: [], rowDataEstimate: [] });
-        }
-    };
-
-
-    handleBeginDayChange(day) {
-        if (day !== undefined) {
-            let date = new Date((day.getMonth() + 1) + '/' + day.getDate() + '/' + day.getFullYear());
-            this.setState({ beginDate: date });
-            if (date > this.state.endDate) {
-                this.setState({ errorMessageDates: 'end date should be after begin date' });
-                this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
-            } else {
-                this.setState({ errorMessageDates: '' });
-                this.getDataForSpendingGrid(date, this.state.endDate, this.state.useFilter);
-            }
-        } else {
-            this.setState({ errorMessageDates: 'wrong date format' });
-        }
-    }
-
-    handleEndDayChange(day) {
-        if (day !== undefined) {
-            let date = new Date((day.getMonth() + 1) + '/' + day.getDate() + '/' + day.getFullYear());
-            this.setState({ endDate: date });
-            if (this.state.beginDate > date) {
-                this.setState({ errorMessageDates: 'end date should be after begin date' });
-                this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
-            } else {
-                this.setState({ errorMessageDates: '' });
-                this.getDataForSpendingGrid(this.state.beginDate, date, this.state.useFilter);
-            }
-        } else {
-            this.setState({ errorMessageDates: 'wrong date format' });
-        }
-    }
-
 
     render() {
         return (
             <div className="anz-spending">
                 <div className='button-container'>
                     <div className='begin-date-picker-real'>
-                        <DayPickerInput
-                            formatDate={formatDate}
-                            parseDate={parseDate}
-                            placeholder={`${formatDate(new Date(), 'll')}`}
-                            onDayChange={this.handleBeginDayChange.bind(this)}
-                        />
+                        <DayPickerInput formatDate={formatDate} parseDate={parseDate} placeholder={`${formatDate(new Date(), 'll')}`}
+                                        onDayChange={this.props.handleBeginDayChange.bind(this, 'getFinancialDailyData')} />
                     </div>
-
                     <div className='end-date-picker-real'>
-                        <DayPickerInput
-                            formatDate={formatDate}
-                            parseDate={parseDate}
-                            placeholder={`${formatDate(new Date(), 'll')}`}
-                            onDayChange={this.handleEndDayChange.bind(this)}
-                        />
+                        <DayPickerInput formatDate={formatDate} parseDate={parseDate} placeholder={`${formatDate(new Date(), 'll')}`}
+                                        onDayChange={this.props.handleEndDayChange.bind(this, 'getFinancialDailyData')} />
                     </div>
-                    <div className='error-message'>
-                        {this.state.errorMessageDates}
-                    </div>
+                    <div className='date-message'> {this.props.dateInputMessage} </div>
                 </div>
+
                 <div className='divider-hours'>Daily Real Revenue</div>
-                <div className='ag-theme-balham-dark' style={{ height: '200px', width: '100%' }}>
-                    <AgGridReact
-                        columnDefs={this.state.columnDefs}
-                        rowData={this.state.rowDataReal}
-                        enableSorting={true}
-                        enableFilter={true}
-                        onGridReady={this.onGridReady}>
+                <div className='ag-theme-balham-dark' style={{height: '200px', width: '100%'}}>
+                    <AgGridReact columnDefs={this.props.jsonServerData.columns} rowData={this.props.jsonServerData.dataReal} enableSorting={true}
+                                 enableFilter={true} onGridReady={this.onGridReady}>
                     </AgGridReact>
                 </div>
-                <div className='divider-salary'>Daily Real Revenue(Average)</div>
-                <div className='ag-theme-blue' style={{ height: '200px', width: '100%' }}>
-                    <AgGridReact
-                        columnDefs={this.state.columnDefs}
-                        rowData={this.state.rowDataRealAverage}
-                        enableSorting={true}
-                        enableFilter={true}>
+                <div className='divider-average'>Daily Real Revenue(Average)</div>
+                <div className='ag-theme-fresh' style={{height: '180px', width: '100%'}}>
+                    <AgGridReact columnDefs={this.props.jsonServerData.columns} rowData={this.props.jsonServerData.dataEstimate}
+                                 enableSorting={true} enableFilter={true} onGridReady={this.onGridReady}>
                     </AgGridReact>
                 </div>
-                <div className='divider-hours'>Daily Estimate Revenue</div>
+
+                <div className='divider-recap'>Recap Data</div>
+                <div className='recap-div' style={{height: '200px', width: '100%'}}>
+                    <JqxGrid width='100%' height='100%' columns={this.props.jsonServerData.jQGridRecapColumns}
+                             source={new jqx.dataAdapter({ datatype: 'local', localdata: this.props.jsonServerData.jQGridRecapSource })}
+                             theme={'energyblue'} showaggregates={true} showstatusbar={true}/>
+                </div>
+
+                {/*<div className='divider-hours'>Daily Estimate Revenue</div>
                 <div className='ag-theme-balham-dark' style={{ height: '200px', width: '100%' }}>
                     <AgGridReact
                         columnDefs={this.state.columnDefs}
@@ -148,13 +72,14 @@ class DailyData extends React.Component {
                         enableSorting={true}
                         enableFilter={true}>
                     </AgGridReact>
-                </div>
+                </div>*/}
             </div>
         );
     }
 
     onGridReady = params => {
         params.api.sizeColumnsToFit();
+        params.api.hideOverlay();
     }
 }
 

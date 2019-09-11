@@ -121,7 +121,7 @@ class AnzConfig extends React.Component {
         this.setState({ categoryLine: event.target.value });
     };
     // **************************************************
-    
+
 
     render() {
         let serverUploadAnzLink = 'http://' + config.server.server_address + ':3005/uploadAnzCsv';
@@ -133,7 +133,7 @@ class AnzConfig extends React.Component {
             <Dialog onClose={this.props.onConfigClose} aria-labelledby="simple-dialog-title"
                     open={this.props.openConfig}
                     fullWidth={true}
-                    maxWidth={'lg'}>
+                    maxWidth={'md'}>
                 <DialogTitle id="simple-dialog-title">Spending Configuration</DialogTitle>
 
 
@@ -149,12 +149,6 @@ class AnzConfig extends React.Component {
                     </div>
 
                     <div className='config-add'>
-                        <TextField
-                            id="filterLine"
-                            label="Spending filter"
-                            className='text-field'
-                            onChange={this.handleFilterLineChange}
-                            margin="normal" />
                         <div className='add-config-button'>
                             <Button style={{ justifyContent: 'center' }}
                                     variant="contained"
@@ -162,15 +156,15 @@ class AnzConfig extends React.Component {
                                 Add
                             </Button>
                         </div>
+                        <TextField
+                            id="filterLine"
+                            label="Spending filter"
+                            className='text-field'
+                            onChange={this.handleFilterLineChange}
+                            margin="normal" />
                     </div>
 
                     <div className='category-add'>
-                        <TextField
-                            id="filterLine"
-                            label="Add category"
-                            className='text-field'
-                            onChange={this.handleCategoryLineChange}
-                            margin="normal" />
                         <div className='add-config-button'>
                             <Button style={{ justifyContent: 'center' }}
                                     variant="contained"
@@ -178,8 +172,13 @@ class AnzConfig extends React.Component {
                                 Add
                             </Button>
                         </div>
+                        <TextField
+                            id="filterLine"
+                            label="Add category"
+                            className='text-field'
+                            onChange={this.handleCategoryLineChange}
+                            margin="normal" />
                     </div>
-
                 </div>
 
                 <div className='grids-container'>

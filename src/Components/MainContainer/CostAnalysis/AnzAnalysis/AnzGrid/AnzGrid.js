@@ -1,10 +1,7 @@
 import * as React from 'react';
-import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
-import { formatDate, parseDate, } from 'react-day-picker/moment';
 import 'date-fns';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -15,8 +12,15 @@ import Switch from '@material-ui/core/Switch';
 import './AnzGrid.css'
 import Button from "@material-ui/core/Button/Button";
 import AnzConfig from '../AnzConfig/AnzConfig';
-let config = require('../../../../../Config/config-moulin');
 
+import 'jqwidgets-scripts/jqwidgets/styles/jqx.base.css';
+import 'jqwidgets-scripts/jqwidgets/styles/jqx.dark.css';
+import JqxGrid, { IGridProps, jqx  } from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxgrid';
+import JqxDateTimeInput from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxdatetimeinput';
+
+
+
+let config = require('../../../../../Config/config-moulin');
 
 
 const styles = {
@@ -27,21 +31,24 @@ const styles = {
 
 
 class AnzGrid extends React.Component {
+
     constructor(props) {
+        super(props);
+
         let todayDate= new Date();
         todayDate.setHours(0,0,0,0);
-        super(props);
         this.state = {
             columnDefs: [],
             rowData: [],
             beginDate: todayDate,
             endDate: todayDate,
             useFilter: true,
+            groupByCategory: false,
             errorMessageDates: 'Choose a date range',
-            openConfig: false
+            openConfig: false,
+            anzJQGridSpendingColumns :[],
+            anzJQGridSource :{}
         };
-
-
     }
 
     formatDate(datum) {
@@ -49,22 +56,25 @@ class AnzGrid extends React.Component {
         return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     };
 
-    getDataForSpendingGrid = async (beginDate, endDate, useFilter) => {
-        let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/getAnzSpending?beginDate=' + this.formatDate(beginDate) + '&endDate=' + this.formatDate(endDate) +
-            '&useFilter=' + useFilter;
+    getDataForSpendingGrid = async (beginDate, endDate, useFilter, groupByCategory) => {
+        let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/getGridSpending?beginDate=' + this.formatDate(beginDate) + '&endDate=' + this.formatDate(endDate) +
+            '&useFilter=' + useFilter + '&groupByCategory=' + groupByCategory;
         console.log(queryUrlWithDates);
+
         const response = await fetch(queryUrlWithDates);
         const myJsonData = await response.json();
-        if (myJsonData.columns.length !== undefined) {
-            this.setState({ columnDefs: myJsonData.columns, rowData: myJsonData.data });
-        }
-        else {
+        let jqDataSource = { datatype: 'local', localdata: myJsonData.agGridData };
+
+        if (myJsonData.agGridColumns.length !== undefined) {
+            this.setState({ columnDefs: myJsonData.agGridColumns, rowData: myJsonData.agGridData,  anzJQGridSpendingColumns: myJsonData.jqGridColumns, anzJQGridSource: new jqx.dataAdapter(jqDataSource) });
+        }else {
             this.setState({ columnDefs: [], rowData: [] });
         }
     };
 
 
-    handleBeginDayChange(day) {
+    handleBeginDayChange(event) {
+        const day = event.args.date;
         if (day !== undefined) {
             let date = new Date((day.getMonth() + 1) + '/' + day.getDate() + '/' + day.getFullYear());
             this.setState({ beginDate: date });
@@ -73,14 +83,17 @@ class AnzGrid extends React.Component {
                 this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
             } else {
                 this.setState({ errorMessageDates: '' });
-                this.getDataForSpendingGrid(date, this.state.endDate, this.state.useFilter);
+                this.getDataForSpendingGrid(date, this.state.endDate, this.state.useFilter, this.state.groupByCategory);
             }
         } else {
             this.setState({ errorMessageDates: 'wrong date format' });
         }
     }
 
-    handleEndDayChange(day) {
+
+
+    handleEndDayChange(event) {
+        const day = event.args.date;
         if (day !== undefined) {
             let date = new Date((day.getMonth() + 1) + '/' + day.getDate() + '/' + day.getFullYear());
             this.setState({ endDate: date });
@@ -89,7 +102,7 @@ class AnzGrid extends React.Component {
                 this.setState({ columnDefs: [], rowData: [], dataSalary: [] });
             } else {
                 this.setState({ errorMessageDates: '' });
-                this.getDataForSpendingGrid(this.state.beginDate, date, this.state.useFilter);
+                this.getDataForSpendingGrid(this.state.beginDate, date, this.state.useFilter, this.state.groupByCategory);
             }
         } else {
             this.setState({ errorMessageDates: 'wrong date format' });
@@ -97,9 +110,14 @@ class AnzGrid extends React.Component {
     }
 
 
-    handleSwitchChange = name => event => {
-        this.getDataForSpendingGrid(this.state.beginDate, this.state.endDate, !this.state.useFilter);
-        this.setState({ useFilter: !this.state.useFilter });
+    handleFilterSwitchChange = name => event => {
+        this.getDataForSpendingGrid(this.state.beginDate, this.state.endDate, !this.state.useFilter, this.state.groupByCategory);
+        this.setState({ useFilter: !this.state.useFilter, groupByCategory : false });
+    };
+
+    handleCategorySwitchChange = name => event => {
+        this.getDataForSpendingGrid(this.state.beginDate, this.state.endDate, this.state.useFilter, !this.state.groupByCategory);
+        this.setState({ groupByCategory: !this.state.groupByCategory });
     };
 
 
@@ -113,9 +131,6 @@ class AnzGrid extends React.Component {
 
     render() {
 
-        //alert('allow : ' + this.props.allowConfig);
-
-
         return (
             <div className="anz-spending">
                 <div className='button-container'>
@@ -128,58 +143,39 @@ class AnzGrid extends React.Component {
                                 Toggle Config
                             </Button>
                         </div>
-                        ) : (null)}
+                    ) : (null)}
 
-                    <div className='begin-date-picker'>
-                        <DayPickerInput
-                            formatDate={formatDate}
-                            parseDate={parseDate}
-                            placeholder={`${formatDate(new Date(), 'll')}`}
-                            onDayChange={this.handleBeginDayChange.bind(this)}
-                        />
+                    <div className={'begin-date-picker'}>
+                        <JqxDateTimeInput width={115} height={25} onValueChanged={this.handleBeginDayChange.bind(this)}/>
+                        <br/>
                     </div>
+                    <div className={'end-date-picker'}>
+                        <JqxDateTimeInput width={115} height={25} onValueChanged={this.handleEndDayChange.bind(this)}/>
+                        <br/>
 
-                    <div className='end-date-picker'>
-                        <DayPickerInput
-                            formatDate={formatDate}
-                            parseDate={parseDate}
-                            placeholder={`${formatDate(new Date(), 'll')}`}
-                            onDayChange={this.handleEndDayChange.bind(this)}
-                        />
                     </div>
 
                     <FormControlLabel className='filter-button'
-                                      control={
-                                          <Switch
-                                              checked={this.state.useFilter}
-                                              onChange={this.handleSwitchChange()}
-                                              value="useFilter"
-                                              color="secondary" />
-                                      }
+                                      control={ <Switch checked={this.state.useFilter} onChange={this.handleFilterSwitchChange()} value="useFilter" color="secondary" /> }
                                       label="Use filter" />
+
+                    {(this.state.useFilter === true) ? (
+                        <FormControlLabel className='filter-button'
+                                          control={ <Switch checked={this.state.groupByCategory} onChange={this.handleCategorySwitchChange()} value="groupByCategory" color="primary" /> }
+                                          label="Group by category" />
+                    ) : (null)}
 
                     <div className='error-message'>
                         {this.state.errorMessageDates}
                     </div>
                 </div>
 
+                <div className='ag-theme-balham-dark'  style={{ height: '700px', width: '99.8%' }} >
+                    <JqxGrid width='100%' height='100%' columns={this.state.anzJQGridSpendingColumns} source={this.state.anzJQGridSource}
+                             sortable={true} theme={'dark'} groupable={this.state.groupByCategory} groups={['Category']}
+                             showaggregates={this.state.groupByCategory} showgroupaggregates={this.state.groupByCategory} showstatusbar={this.state.groupByCategory}/>
 
-                <div
-                    className='ag-theme-balham-dark'
-                    style={{
-                        height: '850px',
-                        width: '100%'
-                    }}
-                >
-                    <AgGridReact
-                        columnDefs={this.state.columnDefs}
-                        rowData={this.state.rowData}
-                        enableSorting={true}
-                        enableFilter={true}
-                        onGridReady={this.onGridReady}>
-                    </AgGridReact>
-                    <AnzConfig openConfig={this.state.openConfig}
-                               onConfigClose={this.handleConfigClose} />
+                    <AnzConfig openConfig={this.state.openConfig} onConfigClose={this.handleConfigClose} />
                 </div>
             </div>
 

@@ -1,36 +1,33 @@
+.simple-dialog-title{
+    color: blue;
+}
 
 
-.upload-container{
-              background-color: cornflowerblue;
-              display: flex;
-              justify-content: left;
-              border: 1px solid black;
 
-          }
+.upload-container {
+    background-color: cornflowerblue;
+    display: flex;
+    justify-content: left;
+    border: 1px solid black;
 
-.grids-container{
-             background-color: grey;
-             display: flex;
-             border: 1px solid black;
+}
 
-         }
+.grids-container {
+    background-color: grey;
+    display: flex;
+    border: 1px solid black;
 
+}
 
 
 .config-add {
-              display: flex;
-
-              height: 80px;
-              position: relative
-          }
+    position: relative
+}
 
 
 .category-add {
-                display: flex;
-
-                height: 80px;
-                position: relative
-            }
+    position: relative
+}
 
 
 .filepond {
@@ -40,17 +37,17 @@
 }
 
 
-.text-field{
-            position: relative;
-            left: 50px;
-            top: 65px;
-        }
+.text-field {
+    position: relative;
+    left: 50px;
+    top: 30px;
+}
 
 
-.add-config-button{
-                    position: relative;
-                    left: 55px;
-                    top: 90px;
-                    width: 100px;
-                    height: 30px;
-                }
+.add-config-button {
+    position: relative;
+    left: 55px;
+    top: 50px;
+    width: 100px;
+    height: 30px;
+}

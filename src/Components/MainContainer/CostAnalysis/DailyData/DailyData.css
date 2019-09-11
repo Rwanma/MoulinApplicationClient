@@ -1,19 +1,52 @@
-.begin-date-picker-real{
-                             position: relative;
-                             left: 10px;
-                             bottom: 1px;
+.begin-date-picker-real {
+    position: relative;
+    left: 10px;
+    bottom: 1px;
 
-                         }
+}
 
 
-.end-date-picker-real{
-                           position: relative;
-                           left: 20px;
-                           bottom: 1px;
-                       }
+.end-date-picker-real {
+    position: relative;
+    left: 20px;
+    bottom: 1px;
+}
 
-.error-message{
-             position: relative;
-             top: 0px;
-             left: 25px;
-         }
+.date-message {
+    position: relative;
+    top: 0;
+    left: 25px;
+}
+
+.divider-average {
+    background-color: lightgrey;
+}
+
+
+.divider-recap {
+    background-color: steelblue;
+}
+
+.recap-div {
+    background-color: lightblue;
+}
+
+
+.recap-salary-div {
+    display: flex;
+    justify-content: left;
+}
+
+.papers {
+    background-color: red;
+    width: 50px;
+    height: 50px;
+}
+
+
+.titles {
+    background-color: red;
+    width: 100px;
+    height: 100px;
+}
+
