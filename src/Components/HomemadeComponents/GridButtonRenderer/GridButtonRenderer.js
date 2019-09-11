@@ -8,7 +8,7 @@ export default class GridButtonRenderer extends Component {
     }
 
     invokeParentMethod() {
-        this.props.context.componentParent.deleteConfig(`Row: ${this.props.node.rowIndex}, Col: ${this.props.colDef.headerName}`)
+        this.props.context.componentParent.deleteCategory(`Row: ${this.props.node.rowIndex}, Col: ${this.props.colDef.headerName}`)
     }
 
     render() {
