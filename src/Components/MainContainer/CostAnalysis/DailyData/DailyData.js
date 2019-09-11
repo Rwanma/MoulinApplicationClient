@@ -14,9 +14,8 @@ import './DailyData.css'
 import 'jqwidgets-scripts/jqwidgets/styles/jqx.base.css';
 import 'jqwidgets-scripts/jqwidgets/styles/jqx.darkblue.css';
 import 'jqwidgets-scripts/jqwidgets/styles/jqx.energyblue.css';
-import JqxGrid, {IGridProps, jqx} from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxgrid';
+import JqxGrid, {jqx} from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxgrid';
 
-let config = require('../../../../Config/config-moulin');
 
 const styles = {
     grid: {
@@ -25,9 +24,6 @@ const styles = {
 };
 
 class DailyData extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (

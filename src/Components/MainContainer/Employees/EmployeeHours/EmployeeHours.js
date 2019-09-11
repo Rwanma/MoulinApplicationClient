@@ -12,7 +12,6 @@ import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'ag-grid-community/dist/styles/ag-theme-blue.css';
 import 'react-day-picker/lib/style.css';
 import './EmployeeHours.css'
-let config = require('../../../../Config/config-moulin');
 
 const styles = {
     grid: {

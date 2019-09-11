@@ -15,7 +15,7 @@ import AnzConfig from '../AnzConfig/AnzConfig';
 
 import 'jqwidgets-scripts/jqwidgets/styles/jqx.base.css';
 import 'jqwidgets-scripts/jqwidgets/styles/jqx.dark.css';
-import JqxGrid, { IGridProps, jqx  } from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxgrid';
+import JqxGrid, { jqx  } from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxgrid';
 import JqxDateTimeInput from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxdatetimeinput';
 
 
