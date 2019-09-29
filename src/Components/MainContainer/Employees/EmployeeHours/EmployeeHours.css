@@ -1,16 +1,29 @@
 
 .button-container {
-              display: flex;
-              justify-content: left;
-              background-color: lightsteelblue;
-          }
+    display: flex;
+    justify-content: left;
+    background-color: lightsteelblue;
+}
 
 
 .divider-salary{
-               background-color: cornflowerblue;
-           }
+    background-color: cornflowerblue;
+}
 
 
 .divider-hours{
-               background-color: grey;
-           }
+    background-color: grey;
+}
+
+
+
+.jq-date-picker{
+    position: relative;
+    top: 10px;
+}
+
+.date-message {
+    position: relative;
+    top: 10px;
+    left: 25px;
+}

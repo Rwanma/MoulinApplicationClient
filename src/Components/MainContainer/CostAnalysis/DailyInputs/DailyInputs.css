@@ -1,5 +1,18 @@
 .button-container {
-              display: flex;
-              justify-content: left;
-              background-color: grey;
-          }
+    display: flex;
+    justify-content: left;
+    background-color: grey;
+}
+
+
+.jq-date-picker{
+    position: relative;
+    top: 10px;
+}
+
+
+.date-message {
+    position: relative;
+    top: 10px;
+    left: 25px;
+}

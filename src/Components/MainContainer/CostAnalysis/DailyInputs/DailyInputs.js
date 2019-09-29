@@ -1,30 +1,27 @@
 import * as React from 'react';
-import { AgGridReact } from 'ag-grid-react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
-import { formatDate, parseDate, } from 'react-day-picker/moment';
 import 'date-fns';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import 'react-day-picker/lib/style.css';
 import './DailyInputs.css'
+import JqxGrid, { jqx } from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxgrid';
+import 'jqwidgets-scripts/jqwidgets/styles/jqx.dark.css';
+import JqxDateTimeInput from 'jqwidgets-scripts/jqwidgets-react-tsx/jqxdatetimeinput';
 
 const styles = { grid: { width: '60%' } };
 
 class DailyInputs extends React.Component {
 
-    updateGridData = async params => {
-        this.gridApi = params.api;
-        let weirdBugStringDate = this.gridApi.getFocusedCell().column.colId;
-        if (weirdBugStringDate.includes('_1')) {
-            weirdBugStringDate = weirdBugStringDate.replace('_1', '');
-        }
 
-        let inputTypeChanged = this.props.jsonServerData.data[this.gridApi.getFocusedCell().rowIndex]['Daily Input'];
-        let valueChanged = this.props.jsonServerData.data[this.gridApi.getFocusedCell().rowIndex][weirdBugStringDate];
+    cellEndEditEvent(event){
+        let rowIndex = event.args.rowindex;
+        let inputTypeChanged = this.props.jsonServerData.data[rowIndex]['Daily Input'];
+        let dateOfChange = event.args.datafield;
+        let valueChanged = event.args.value;
 
         switch (inputTypeChanged) {
             case 'Cash Revenu':
@@ -46,7 +43,7 @@ class DailyInputs extends React.Component {
                 inputTypeChanged = 'almond_cartons';
                 break;
             default:
-                console.log('error');
+                console.log('error in Daily Inputs');
         }
 
         if (valueChanged === '' || valueChanged === undefined || valueChanged === null) {
@@ -60,10 +57,12 @@ class DailyInputs extends React.Component {
             this.props.getJsonObjDataFromServer('GetDailyInputs', this.props.beginDate, this.props.endDate, '');
 
         } else {
-            let extraOptions = '&workDate=' + weirdBugStringDate + '&typeChanged=' + inputTypeChanged + '&newValue=' + valueChanged;
+            let extraOptions = '&workDate=' + dateOfChange + '&typeChanged=' + inputTypeChanged + '&newValue=' + valueChanged;
             this.props.getJsonObjDataFromServer('UpdateDailyInputs', this.props.beginDate, this.props.endDate, extraOptions);
         }
-    };
+
+    }
+
 
 
 
@@ -71,50 +70,31 @@ class DailyInputs extends React.Component {
         return (
             <div className="anz-spending">
                 <div className='button-container'>
-                    <DayPickerInput
-                        formatDate={formatDate}
-                        parseDate={parseDate}
-                        placeholder={`${formatDate(new Date(), 'll')}`}
-                        onDayChange={this.props.handleBeginDayChange.bind(this, 'GetDailyInputs')}
-                    />
-                    <DayPickerInput
-                        formatDate={formatDate}
-                        parseDate={parseDate}
-                        placeholder={`${formatDate(new Date(), 'll')}`}
-                        onDayChange={this.props.handleEndDayChange.bind(this, 'GetDailyInputs')}
-                    />
-                    <div>
-                        {this.props.dateInputMessage}
+
+                    <div className={'jq-date-picker'}>
+                        <JqxDateTimeInput width={115} height={25} onValueChanged={this.props.handleBeginDayChange.bind(this, 'GetDailyInputs', '')} />
+                        <br/>
                     </div>
+                    <div className={'jq-date-picker'}>
+                        <JqxDateTimeInput width={115} height={25} onValueChanged={this.props.handleEndDayChange.bind(this, 'GetDailyInputs', '')} />
+                        <br/>
+                    </div>
+
+                    <div className='date-message'> {this.props.dateInputMessage}</div>
                 </div>
 
 
-                <div className='ag-theme-balham-dark' style={{ height: '800px', width: '100%' }}>
-                    <AgGridReact
-                        columnDefs={this.props.jsonServerData.columns}
-                        rowData={this.props.jsonServerData.data}
-                        enableSorting={true}
-                        enableFilter={true}
-                        onGridReady={this.onGridReady}
-                        onCellEditingStopped={this.updateGridData}
-                        tabToNextCell={this.tabToNextCell}
-                    >
-                    </AgGridReact>
+                <div className='ag-theme-balham-dark' style={{ height: '870px', width: '99.9%' }}>
+                    <JqxGrid width='100%' height='100%'  columns={this.props.jsonServerData.jqGridColumns}
+                             source={new jqx.dataAdapter({ datatype: 'local', localdata: this.props.jsonServerData.data })}
+                             theme={'dark'} editable={this.props.allowTableChanges} altrows={true} enabletooltips={true} selectionmode={'singlecell'}
+                             onCellendedit={this.cellEndEditEvent.bind(this)} />
                 </div>
             </div>
 
         );
     }
 
-    tabToNextCell(params) {
-        return null;
-    }
-
-
-    onGridReady = params => {
-        params.api.sizeColumnsToFit();
-        params.api.hideOverlay();
-    }
 }
 
 DailyInputs.propTypes = {
