@@ -50,3 +50,7 @@
     height: 100px;
 }
 
+.jq-date-picker{
+    position: relative;
+    top: 10px;
+}

@@ -103,7 +103,6 @@ class AnzConfig extends React.Component {
     deleteCategory = params => {
         let configToDelete = this.state.rowDataCategory[parseInt(params.split(',')[0].split(' ')[1], 10)].category;
         let deleteConfigUrl = 'http://' + config.server.server_address + ':3005/deletecategory?&category=' + configToDelete;
-        console.log(deleteConfigUrl);
         this.queryServerForConfigData(deleteConfigUrl);
     };
 

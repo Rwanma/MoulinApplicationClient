@@ -14,6 +14,7 @@ class App extends Component {
         this.todayDate = new Date();
         this.todayDate.setHours(0, 0, 0, 0);
         this.emptyJsonServerData = {};
+        this.emptyJsonServerData.jqGridColumns = [];
 
         this.state = {
             openRightDrawer: false,
@@ -25,7 +26,9 @@ class App extends Component {
             beginDate: this.todayDate,
             endDate: this.todayDate,
             dateInputMessage: 'Choose a date range',
-            jsonServerData : this.emptyJsonServerData
+            jsonServerData : this.emptyJsonServerData,
+            useFilter: true,
+            groupByCategory: false,
         };
     }
 
@@ -80,33 +83,49 @@ class App extends Component {
             let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/' + serverUrl + '?beginDate=' +
                 ScreenStates.formatDate(beginDate) + '&endDate=' + ScreenStates.formatDate(endDate) +
                 '&allowTableChanges=' + this.state.allowTableChanges + extraOptions;
-            console.log(queryUrlWithDates);
+            //console.log(queryUrlWithDates);
             const response = await fetch(queryUrlWithDates);
             const myJsonDataResponse = await response.json();
             this.setState({ jsonServerData : myJsonDataResponse});
         }
     };
 
-
-    handleBeginDayChange(serverUrl, day) {
+    handleBeginDayChange(serverUrl, extraOptions, event) {
+        const day = event.args.date;
         if (day !== undefined) {
             let date = new Date((day.getMonth() + 1) + '/' + day.getDate() + '/' + day.getFullYear());
             this.setState({ beginDate: date, dateInputMessage: 'Choose a date range' });
-            this.getJsonObjDataFromServer(serverUrl, date, this.state.endDate, '');
+            this.getJsonObjDataFromServer(serverUrl, date, this.state.endDate, extraOptions);
         }else{
             this.setState({ dateInputMessage: 'wrong date format', jsonServerData : this.emptyJsonServerData });
         }
     }
 
-    handleEndDayChange(serverUrl, day) {
+
+
+    handleEndDayChange(serverUrl, extraOptions, event) {
+        const day = event.args.date;
         if (day !== undefined) {
             let date = new Date((day.getMonth() + 1) + '/' + day.getDate() + '/' + day.getFullYear());
             this.setState({ endDate: date, dateInputMessage: 'Choose a date range' });
-            this.getJsonObjDataFromServer(serverUrl, this.state.beginDate, date, '');
+            this.getJsonObjDataFromServer(serverUrl, this.state.beginDate, date, extraOptions);
         }else{
             this.setState({ dateInputMessage: 'wrong date format', jsonServerData : this.emptyJsonServerData });
         }
     }
+
+    handleFilterSwitchChange = name => event => {
+        let extraOptions = '&useFilter=' + !this.state.useFilter + '&groupByCategory=' + this.state.groupByCategory;
+        this.getJsonObjDataFromServer('getGridSpending', this.state.beginDate, this.state.endDate, extraOptions);
+        this.setState({ useFilter: !this.state.useFilter, groupByCategory : false });
+    };
+
+    handleCategorySwitchChange = name => event => {
+        let extraOptions = '&useFilter=' + this.state.useFilter + '&groupByCategory=' + !this.state.groupByCategory;
+        this.getJsonObjDataFromServer('getGridSpending', this.state.beginDate, this.state.endDate, extraOptions);
+        this.setState({ groupByCategory: !this.state.groupByCategory });
+    };
+
 
     render() {
         return (
@@ -115,22 +134,27 @@ class App extends Component {
                         <LogonScreen verifyLogon={this.verifyLogon.bind(this)} />
                     ) :
                     <div>
-                        <TopBar openRightSideDrawer={this.openRightSideDrawer.bind(this)}
+                        <TopBar screenTitle={this.state.screenTitle}
+                                openRightSideDrawer={this.openRightSideDrawer.bind(this)}
                                 changeScreenDisplay={this.changeScreenDisplay.bind(this)}
-                                screenTitle={this.state.screenTitle} />
+                        />
                         <MainContainer openRightDrawer={this.state.openRightDrawer}
                                        listForDrawer={this.state.listForDrawer}
                                        screenDisplayType={this.state.screenDisplay}
                                        allowTableChanges={this.state.allowTableChanges}
-                                       closeRightSideDrawer={this.closeRightSideDrawer.bind(this)}
-                                       changeScreenDisplay={this.changeScreenDisplay.bind(this)}
-                                       handleBeginDayChange={this.handleBeginDayChange.bind(this)}
-                                       handleEndDayChange={this.handleEndDayChange.bind(this)}
                                        dateInputMessage={this.state.dateInputMessage}
                                        beginDate={this.state.beginDate}
                                        endDate={this.state.endDate}
                                        jsonServerData={this.state.jsonServerData}
+                                       useFilter={this.state.useFilter}
+                                       groupByCategory={this.state.groupByCategory}
+                                       closeRightSideDrawer={this.closeRightSideDrawer.bind(this)}
+                                       changeScreenDisplay={this.changeScreenDisplay.bind(this)}
+                                       handleBeginDayChange={this.handleBeginDayChange.bind(this)}
+                                       handleEndDayChange={this.handleEndDayChange.bind(this)}
                                        getJsonObjDataFromServer={this.getJsonObjDataFromServer.bind(this)}
+                                       handleFilterSwitchChange={this.handleFilterSwitchChange.bind(this)}
+                                       handleCategorySwitchChange={this.handleCategorySwitchChange.bind(this)}
                         />
                     </div>
                 }
