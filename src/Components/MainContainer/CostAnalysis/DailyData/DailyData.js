@@ -45,19 +45,21 @@ class DailyData extends React.Component {
                                  enableFilter={true} onGridReady={this.onGridReady}>
                     </AgGridReact>
                 </div>
-                <div className='divider-average'>Daily Real Revenue(Average)</div>
-                <div className='ag-theme-fresh' style={{height: '180px', width: '100%'}}>
-                    <AgGridReact columnDefs={this.props.jsonServerData.columns} rowData={this.props.jsonServerData.dataEstimate}
-                                 enableSorting={true} enableFilter={true} onGridReady={this.onGridReady}>
-                    </AgGridReact>
-                </div>
 
-                <div className='divider-recap'>Recap Data</div>
+                <div className='divider-recap'>Recap Data For The Chosen Date</div>
                 <div className='recap-div' style={{height: '200px', width: '100%'}}>
                     <JqxGrid width='100%' height='100%' columns={this.props.jsonServerData.jQGridRecapColumns} altrows={true}
                              source={new jqx.dataAdapter({ datatype: 'local', localdata: this.props.jsonServerData.jQGridRecapSource })}
                              theme={'energyblue'} showaggregates={true} showstatusbar={true}  />
                 </div>
+
+                <div className='divider-average'>Average and Total Values</div>
+                <div className='ag-theme-fresh' style={{height: '190px', width: '500px'}}>
+                    <AgGridReact columnDefs={this.props.jsonServerData.averageDailyColumns} rowData={this.props.jsonServerData.dataAverageReal}
+                                 enableSorting={true} enableFilter={true} onGridReady={this.onGridReady}>
+                    </AgGridReact>
+                </div>
+
 
                 {/*<div className='divider-hours'>Daily Estimate Revenue</div>
                 <div className='ag-theme-balham-dark' style={{ height: '200px', width: '100%' }}>
