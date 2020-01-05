@@ -2,6 +2,7 @@ import React from 'react'
 import RightSideDrawer from "../../RightSideDrawer/RightSideDrawer";
 
 import DailyData from "../../../Components/MainContainer/CostAnalysis/DailyData/DailyData";
+import ChartAnalysis from "../../../Components/MainContainer/CostAnalysis/ChartAnalysis/ChartAnalysis";
 import Employee from "../../../Components/MainContainer/Employees/EmployeeEntry/Employee";
 import DailyInputs from "../../../Components/MainContainer/CostAnalysis/DailyInputs/DailyInputs";
 import EmployeeHours from "../../../Components/MainContainer/Employees/EmployeeHours/EmployeeHours";
@@ -48,6 +49,13 @@ class MainContainer extends React.Component {
                        endDate={this.props.endDate} jsonServerData={this.props.jsonServerData}
                        handleBeginDayChange={this.props.handleBeginDayChange.bind(this)}
                        handleEndDayChange={this.props.handleEndDayChange.bind(this)}/>;
+
+        this.screenMap['Daily Chart Analysis'] =
+            <ChartAnalysis dateInputMessage={this.props.dateInputMessage} beginDate={this.props.beginDate}
+                           endDate={this.props.endDate} jsonServerData={this.props.jsonServerData}
+                           handleBeginDayChange={this.props.handleBeginDayChange.bind(this)}
+                           handleEndDayChange={this.props.handleEndDayChange.bind(this)}/>;
+
 
         this.screenMap['Employee Hours'] = <EmployeeHours allowTableChanges={this.props.allowTableChanges}
                                                           dateInputMessage={this.props.dateInputMessage}
