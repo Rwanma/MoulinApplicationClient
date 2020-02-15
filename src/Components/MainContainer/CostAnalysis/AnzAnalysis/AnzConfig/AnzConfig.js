@@ -4,6 +4,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { AgGridReact } from 'ag-grid-react';
 import GridButtonRenderer from "../../../../HomemadeComponents/GridButtonRenderer/GridButtonRenderer";
+import CategoryGridButtonRenderer from "../../../../HomemadeComponents/GridButtonRenderer/CategoryGridButtonRenderer";
+import FilterGridButtonRenderer from "../../../../HomemadeComponents/GridButtonRenderer/FilterGridButtonRenderer";
 import { FilePond } from 'react-filepond';
 import Button from "@material-ui/core/Button/Button";
 import TextField from '@material-ui/core/TextField';
@@ -31,7 +33,7 @@ class AnzConfig extends React.Component {
             // CATEGORY TABLE
             columnDefsCategory: [
                 { headerName: "Category", field: "category" },
-                { headerName: "Delete category", field: "deleteButton", cellRenderer: "gridButtonRenderer" }
+                {headerName: "Delete category", field: "deleteButton", cellRenderer: "categoryGridButtonRenderer"}
 
             ],
             rowDataCategory: [],
@@ -40,6 +42,8 @@ class AnzConfig extends React.Component {
             filterLine: '', categoryLine: '',
             context: { componentParent: this },
             frameworkButtonComponents: { gridButtonRenderer: GridButtonRenderer },
+            deleteCategoryButton: {categoryGridButtonRenderer: CategoryGridButtonRenderer},
+            deleteFilterButton: {filterGridButtonRenderer: FilterGridButtonRenderer},
         };
 
         this.loadConfigData();
@@ -48,7 +52,6 @@ class AnzConfig extends React.Component {
     onGridReady = params => {
         params.api.sizeColumnsToFit();
     };
-
 
 
     //***************** Load filter grid ***********************************
@@ -62,16 +65,22 @@ class AnzConfig extends React.Component {
         const myJsonData = await response.json();
 
         this.setState({
-                columnDefsFilters: [
-                    { headerName: "Filter", field: "filter" },
-                    { headerName: "Category", field: "category", width: 200, cellEditor: "agSelectCellEditor", editable: true, cellEditorParams: { values: myJsonData.combo_box_categories } },
-                    { headerName: "Delete filter", field: "deleteButton", cellRenderer: "gridButtonRenderer" }
-                ],
-                rowDataFilters: myJsonData.spendingFilters,
-                rowDataCategory: myJsonData.categories
-            });
+            columnDefsFilters: [
+                { headerName: "Filter", field: "filter" },
+                {
+                    headerName: "Category",
+                    field: "category",
+                    width: 200,
+                    cellEditor: "agSelectCellEditor",
+                    editable: true,
+                    cellEditorParams: {values: myJsonData.combo_box_categories}
+                },
+                {headerName: "Delete filter", field: "deleteButton", cellRenderer: "filterGridButtonRenderer"}
+            ],
+            rowDataFilters: myJsonData.spendingFilters,
+            rowDataCategory: myJsonData.categories
+        });
     };
-
 
 
     //***************** Filter change ***********************************
@@ -82,6 +91,13 @@ class AnzConfig extends React.Component {
             let addFilterUrl = 'http://' + config.server.server_address + ':3005/AddFilter?&filter=' + this.state.filterLine;
             this.queryServerForConfigData(addFilterUrl);
         }
+    };
+
+    deleteFilter = params => {
+        let filterToDelete = this.state.rowDataFilters[parseInt(params.split(',')[0].split(' ')[1], 10)].filter;
+        let deleteFilterUrl = 'http://' + config.server.server_address + ':3005/DeleteFilter?&filter=' + filterToDelete;
+        this.queryServerForConfigData(deleteFilterUrl);
+
     };
 
     handleFilterLineChange = event => {
@@ -120,8 +136,8 @@ class AnzConfig extends React.Component {
 
         return (
 
-            <Dialog onClose={this.props.onConfigClose} aria-labelledby="simple-dialog-title"
-                    open={this.props.openConfig}
+            <Dialog onClose={this.props.onAnzConfigClose} aria-labelledby="simple-dialog-title"
+                    open={this.props.openAnzConfig}
                     fullWidth={true}
                     maxWidth={'md'}>
                 <DialogTitle id="simple-dialog-title">Spending Configuration</DialogTitle>
@@ -133,7 +149,7 @@ class AnzConfig extends React.Component {
                         <FilePond className='filepond' server={serverUploadAnzLink} />
                     </div>
                     <div className='config-csv-upload-container'>
-                        <p>Upload the configuration file</p>
+                        <p>Upload the config file</p>
                         <FilePond className='filepond' server={serverUploadFiltersLink}
                                   onprocessfile={() => this.loadConfigData()} />
                     </div>
@@ -146,12 +162,13 @@ class AnzConfig extends React.Component {
                                 Add
                             </Button>
                         </div>
-                        <TextField
-                            id="filterLine"
-                            label="Spending filter"
-                            className='text-field'
-                            onChange={this.handleFilterLineChange}
-                            margin="normal" />
+                        <div className='text-field'>
+                            <TextField
+                                id="filterLine"
+                                label="Spending filter"
+                                onChange={this.handleFilterLineChange}
+                                margin="normal" />
+                        </div>
                     </div>
 
                     <div className='category-add'>
@@ -162,12 +179,13 @@ class AnzConfig extends React.Component {
                                 Add
                             </Button>
                         </div>
-                        <TextField
-                            id="filterLine"
-                            label="Add category"
-                            className='text-field'
-                            onChange={this.handleCategoryLineChange}
-                            margin="normal" />
+                        <div className='text-field'>
+                            <TextField
+                                id="filterLine"
+                                label="Add category"
+                                onChange={this.handleCategoryLineChange}
+                                margin="normal" />
+                        </div>
                     </div>
                 </div>
 
@@ -178,7 +196,7 @@ class AnzConfig extends React.Component {
                                      enableSorting={true}
                                      enableFilter={true}
                                      context={this.state.context}
-                                     frameworkComponents={this.state.frameworkButtonComponents}
+                                     frameworkComponents={this.state.deleteFilterButton}
                                      onGridReady={this.onGridReady}
 
 
@@ -193,7 +211,7 @@ class AnzConfig extends React.Component {
                                      enableSorting={true}
                                      enableFilter={true}
                                      context={this.state.context}
-                                     frameworkComponents={this.state.frameworkButtonComponents}
+                                     frameworkComponents={this.state.deleteCategoryButton}
                                      onGridReady={this.onGridReady}
                         >
                         </AgGridReact>

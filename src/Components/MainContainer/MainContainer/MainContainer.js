@@ -7,6 +7,7 @@ import Employee from "../../../Components/MainContainer/Employees/EmployeeEntry/
 import DailyInputs from "../../../Components/MainContainer/CostAnalysis/DailyInputs/DailyInputs";
 import EmployeeHours from "../../../Components/MainContainer/Employees/EmployeeHours/EmployeeHours";
 import AnzGrid from "../../../Components/MainContainer/CostAnalysis/AnzAnalysis/AnzGrid/AnzGrid";
+import PersonalSpending from "../../../Components/MainContainer/CostAnalysis/PersonalSpending/PersonalSpending";
 
 class MainContainer extends React.Component {
     constructor(props) {
@@ -55,6 +56,13 @@ class MainContainer extends React.Component {
                            endDate={this.props.endDate} jsonServerData={this.props.jsonServerData}
                            handleBeginDayChange={this.props.handleBeginDayChange.bind(this)}
                            handleEndDayChange={this.props.handleEndDayChange.bind(this)}/>;
+
+        this.screenMap['Personal Spending'] =
+            <PersonalSpending dateInputMessage={this.props.dateInputMessage} beginDate={this.props.beginDate}
+                              endDate={this.props.endDate} jsonServerData={this.props.jsonServerData}
+                              handleBeginDayChange={this.props.handleBeginDayChange.bind(this)}
+                              handleEndDayChange={this.props.handleEndDayChange.bind(this)}
+                              getJsonObjDataFromServer={this.props.getJsonObjDataFromServer.bind(this)}/>;
 
 
         this.screenMap['Employee Hours'] = <EmployeeHours allowTableChanges={this.props.allowTableChanges}

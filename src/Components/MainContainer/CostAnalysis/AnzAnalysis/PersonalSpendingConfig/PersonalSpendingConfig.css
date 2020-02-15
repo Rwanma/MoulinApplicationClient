@@ -13,6 +13,7 @@
 }
 
 .grids-container {
+    background-color: grey;
     display: flex;
     border: 1px solid black;
 
@@ -25,7 +26,6 @@
 
 
 .category-add {
-
     position: relative
 }
 
@@ -37,15 +37,24 @@
 }
 
 
-.text-field {
-    position: relative;
-    top:40px;
-
+.spending-text-field {
+    float: left;
+    /*left: 50px;*/
+    top: 50px;
+    width: 300px;
 }
 
 
-.add-config-button {
 
-    top:10px;
+.add-config-button-personal-spending {
+
+    top:30px;
     position: absolute;
+}
+
+
+.combo-box-spender{
+    position: relative;
+    top: 18px;
+    left: 420px;
 }

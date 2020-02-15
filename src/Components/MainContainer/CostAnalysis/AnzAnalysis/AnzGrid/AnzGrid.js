@@ -12,6 +12,7 @@ import Switch from '@material-ui/core/Switch';
 import './AnzGrid.css'
 import Button from "@material-ui/core/Button/Button";
 import AnzConfig from '../AnzConfig/AnzConfig';
+import PersonalSpendingConfig from '../PersonalSpendingConfig/PersonalSpendingConfig';
 
 import 'jqwidgets-scripts/jqwidgets/styles/jqx.base.css';
 import 'jqwidgets-scripts/jqwidgets/styles/jqx.dark.css';
@@ -30,33 +31,49 @@ class AnzGrid extends React.Component {
 
     constructor(props) {
         super(props);
-        let todayDate= new Date();
-        todayDate.setHours(0,0,0,0);
         this.state = {
-            openConfig: false,
+            openAnzConfig: false,
+            openPersonalSpendingConfig: false,
             extraOptions : '&useFilter=' + this.props.useFilter + '&groupByCategory=' + this.props.groupByCategory
         };
     }
 
-    showConfig() {
-        this.setState({ openConfig: true });
+    showAnzConfig() {
+        this.setState({ openAnzConfig: true });
     }
 
-    handleConfigClose = () => {
-        this.setState({ openConfig: false });
+    showPersonalSpendingConfig() {
+        this.setState({ openPersonalSpendingConfig: true });
+    }
+
+    handleAnzConfigClose = () => {
+        this.setState({ openAnzConfig: false });
     };
 
+    handlePersonalSpendingConfigClose = () => {
+        this.setState({ openPersonalSpendingConfig: false });
+    };
+
+
     render() {
+        console.log(this.props.jsonServerData.jqGridColumns);
+        console.log(this.props.jsonServerData.agGridData);
+
         return (
-            <div className="anz-spending">
+            <div className="anz-grid">
                 <div className='button-container'>
 
                     {(this.props.allowConfig === true) ? (
                         <div className='toggle-button-anz'>
-                            <Button style={{ justifyContent: 'center' }}
+                            <Button className='anz-config-button' style={{ justifyContent: 'center' }}
                                     variant="contained"
-                                    onClick={this.showConfig.bind(this)}>
-                                Toggle Config
+                                    onClick={this.showAnzConfig.bind(this)}>
+                                Toggle Anz Config
+                            </Button>
+                            <Button className='personal-config-button' style={{ justifyContent: 'center' }}
+                                    variant="contained"
+                                    onClick={this.showPersonalSpendingConfig.bind(this)}>
+                                Personal Spending Config
                             </Button>
                         </div>
                     ) : (null)}
@@ -84,12 +101,13 @@ class AnzGrid extends React.Component {
                 </div>
 
                 <div className='ag-theme-balham-dark'  style={{ height: '870px', width: '99.9%' }} >
+                    <AnzConfig openAnzConfig={this.state.openAnzConfig} onAnzConfigClose={this.handleAnzConfigClose} />
+                    <PersonalSpendingConfig openPersonalSpendingConfig={this.state.openPersonalSpendingConfig} onPersonalSpendingConfigClose={this.handlePersonalSpendingConfigClose} />
                     <JqxGrid width='100%' height='100%'
                              columns={this.props.jsonServerData.jqGridColumns}
                              source={new jqx.dataAdapter({ datatype: 'local', localdata: this.props.jsonServerData.agGridData })}
                              sortable={true} theme={'dark'} groupable={this.props.groupByCategory} groups={['Category']}
                              showaggregates={this.props.groupByCategory} showgroupaggregates={this.props.groupByCategory} showstatusbar={this.props.groupByCategory}/>
-                    <AnzConfig openConfig={this.state.openConfig} onConfigClose={this.handleConfigClose} />
                 </div>
             </div>
 

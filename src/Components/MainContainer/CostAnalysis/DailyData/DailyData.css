@@ -27,8 +27,10 @@
     background-color: steelblue;
 }
 
-.recap-div {
+.average-recap-div {
     background-color: lightblue;
+    display:flex;
+    flex-direction:row;
 }
 
 
@@ -53,4 +55,21 @@
 .jq-date-picker{
     position: relative;
     top: 10px;
+}
+
+
+.recap-table-container{
+    float : left;
+
+}
+
+.average-table-container{
+    float : left;
+
+}
+
+
+.personal-spending-table-div-daily-data{
+    height:300px;
+    width:150px;
 }

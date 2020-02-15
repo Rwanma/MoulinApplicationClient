@@ -1,44 +1,47 @@
 
 .button-container {
-              display: flex;
-              justify-content: left;
-              background-color: cadetblue;
+    background-color: cadetblue;
+    position: relative;
 
-          }
+}
 
 
 .toggle-button-anz{
-                       position: relative;
-                       top: 5px;
-                       width: 200px;
-                       height: 40px;
+    position: relative;
+    top: 5px;
+    width: 500px;
+    height: 40px;
 
-                   }
+}
+
+.personal-config-button{
+    left : 5px;
+}
 
 
 .filter-button{
-              position: relative;
-              top: 2px;
-              left: 10px;
-          }
+    position: relative;
+    top: 2px;
+    left: 25px;
+}
 
 
 .begin-date-picker{
-                    position: relative;
-                    top: 10px;
+    position: relative;
+    top: 10px;
 
-                }
+}
 
 
 .end-date-picker{
-                  position: relative;
-                  top: 10px;
+    position: relative;
+    top: 10px;
 
-              }
+}
 
 .error-message{
-             position: relative;
-             top: 12px;
-             left: 10px;
-         }
+    position: relative;
+    top: 12px;
+    left: 10px;
+}
 
