@@ -116,7 +116,7 @@ class PersonalSpendingConfig extends React.Component {
                             className='spending-text-field'
                             onChange={this.updatePersonalSpendingChange}
                             margin="normal" />
-                        <div className='combo-box-spender'>
+                        <div className='combo-box-spender-config'>
                             <JqxComboBox
                                 width={250} height={25}
                                 source={this.spenderNames} selectedIndex={0} onSelect={this.onSpenderSelect}/>
