@@ -21,7 +21,8 @@
 }
 
 .combo-box-spender{
-    left : 30px;
+    position: relative;
+    left : 50px;
     top: 10px;
 }
 
@@ -46,3 +47,9 @@
     background-color: darkslateblue;
 }
 
+
+.date-message-personal-spending {
+    position: relative;
+    top: 10px;
+    left: 60px;
+}

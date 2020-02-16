@@ -32,18 +32,12 @@ class PersonalSpending extends React.Component {
         this.extraOptions = '&spenderName=' + this.spenderName;
         this.props.getJsonObjDataFromServer('getPersonalSpending', this.props.beginDate, this.props.endDate, this.extraOptions);
         this.selectedItem = this.spenderNames.indexOf(this.spenderName);
-        //console.log('toto : ' + this.selectedItem);
     };
 
 
 
 
     render() {
-
-        //console.log(this.props.jsonServerData);
-        console.log(this.props.jsonServerData);
-
-
 
         return (
             <div>
@@ -61,8 +55,8 @@ class PersonalSpending extends React.Component {
                             width={250} height={25}
                             source={this.spenderNames} selectedIndex={this.selectedItem} onSelect={this.onSpenderSelect}/>
                     </div>
+                    <div className='date-message-personal-spending'> {this.props.dateInputMessage}</div>
                 </div>
-
 
                 <div className='divider-recap-personal-spending'>Recap Personal Spending</div>
                 <div className='personal-spending-table-div' >
@@ -70,8 +64,6 @@ class PersonalSpending extends React.Component {
                              columns={this.props.jsonServerData.personalSpendingColumnsTotals} source={new jqx.dataAdapter({datatype: 'local', localdata: this.props.jsonServerData.personalSpendingDataTotals })}
                              theme={'blue'} />
                 </div>
-
-
 
                 <div className='divider-details-personal-spending'>Personal Spending Details</div>
                 <div className='personal-spending-table-details-div'>
