@@ -90,10 +90,10 @@ class AnzGrid extends React.Component {
                     <FormControlLabel className='filter-button' control={ <Switch checked={this.props.useFilter} onChange={this.props.handleFilterSwitchChange()}
                                                                                   value="useFilter" color="secondary" /> } label="Use filter" />
 
-                    {(this.props.useFilter === true) ? (
+{/*                    {(this.props.useFilter === true) ? (
                         <FormControlLabel className='filter-button' control={ <Switch checked={this.props.groupByCategory} onChange={this.props.handleCategorySwitchChange()}
                                                                                       value="groupByCategory" color="primary" /> } label="Group by category" />
-                    ) : (null)}
+                    ) : (null)}*/}
 
                     <div className='error-message'>
                         {this.props.dateInputMessage}
