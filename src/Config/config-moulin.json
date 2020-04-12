@@ -1,5 +1,6 @@
 {
   "server": {
-    "server_address": "localhost"
+    "server_address": "localhost",
+    "server_port": "3006"
   }
 }

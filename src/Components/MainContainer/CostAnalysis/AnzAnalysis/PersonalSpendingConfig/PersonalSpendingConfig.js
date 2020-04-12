@@ -53,7 +53,7 @@ class PersonalSpendingConfig extends React.Component {
 
     //***************** Load filter grid ***********************************
     loadConfigData() {
-        let queryUrl = 'http://' + config.server.server_address + ':3005/GetAllPersonalSpendingConfig';
+        let queryUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/GetAllPersonalSpendingConfig';
         this.queryServerForConfigData(queryUrl);
     }
 
@@ -73,14 +73,14 @@ class PersonalSpendingConfig extends React.Component {
     };
 
     addPersonalSpending = () => {
-        let queryUrl = 'http://' + config.server.server_address + ':3005/AddPersonalSpending?&personal_spending=' + this.personalSpending + '&spender_name=' + this.spenderName;
+        let queryUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/AddPersonalSpending?&personal_spending=' + this.personalSpending + '&spender_name=' + this.spenderName;
         this.queryServerForConfigData(queryUrl);
     };
 
 
     deletePersonalSpending = params => {
         let filterToDelete = this.state.rowDataPersonalSpending[parseInt(params.split(',')[0].split(' ')[1], 10)].personal_spending;
-        let deleteFilterUrl = 'http://' + config.server.server_address + ':3005/DeletePersonalSpending?&personal_spending=' + filterToDelete;
+        let deleteFilterUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/DeletePersonalSpending?&personal_spending=' + filterToDelete;
         this.queryServerForConfigData(deleteFilterUrl);
 
     };
@@ -89,7 +89,7 @@ class PersonalSpendingConfig extends React.Component {
 
 
     render() {
-        let serverUploadPersonalSpending = 'http://' + config.server.server_address + ':3005/uploadPersonalSpendingCsv';
+        let serverUploadPersonalSpending = 'http://' + config.server.server_address + ':' + config.server.server_port + '/uploadPersonalSpendingCsv';
 
         return (
             <Dialog onClose={this.props.onPersonalSpendingConfigClose} aria-labelledby="simple-dialog-title"
