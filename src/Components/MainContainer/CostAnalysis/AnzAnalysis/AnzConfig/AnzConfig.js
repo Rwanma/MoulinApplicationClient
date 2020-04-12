@@ -56,7 +56,7 @@ class AnzConfig extends React.Component {
 
     //***************** Load filter grid ***********************************
     loadConfigData() {
-        let queryUrl = 'http://' + config.server.server_address + ':3005/GetAllConfigData';
+        let queryUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/GetAllConfigData';
         this.queryServerForConfigData(queryUrl);
     }
 
@@ -88,14 +88,14 @@ class AnzConfig extends React.Component {
         if (this.state.filterLine.trim() === '' || this.state.filterLine === undefined) {
             alert('you cannot add an empty configuration line ')
         } else {
-            let addFilterUrl = 'http://' + config.server.server_address + ':3005/AddFilter?&filter=' + this.state.filterLine;
+            let addFilterUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/AddFilter?&filter=' + this.state.filterLine;
             this.queryServerForConfigData(addFilterUrl);
         }
     };
 
     deleteFilter = params => {
         let filterToDelete = this.state.rowDataFilters[parseInt(params.split(',')[0].split(' ')[1], 10)].filter;
-        let deleteFilterUrl = 'http://' + config.server.server_address + ':3005/DeleteFilter?&filter=' + filterToDelete;
+        let deleteFilterUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/DeleteFilter?&filter=' + filterToDelete;
         this.queryServerForConfigData(deleteFilterUrl);
 
     };
@@ -111,14 +111,14 @@ class AnzConfig extends React.Component {
         if (this.state.categoryLine.trim() === '' || this.state.categoryLine === undefined) {
             alert('you cannot add an empty category line ')
         } else {
-            let addCategoryUrl = 'http://' + config.server.server_address + ':3005/AddCategory?&category=' + this.state.categoryLine;
+            let addCategoryUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/AddCategory?&category=' + this.state.categoryLine;
             this.queryServerForConfigData(addCategoryUrl);
         }
     };
 
     deleteCategory = params => {
         let configToDelete = this.state.rowDataCategory[parseInt(params.split(',')[0].split(' ')[1], 10)].category;
-        let deleteConfigUrl = 'http://' + config.server.server_address + ':3005/deletecategory?&category=' + configToDelete;
+        let deleteConfigUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/deletecategory?&category=' + configToDelete;
         this.queryServerForConfigData(deleteConfigUrl);
     };
 
@@ -130,8 +130,8 @@ class AnzConfig extends React.Component {
 
 
     render() {
-        let serverUploadAnzLink = 'http://' + config.server.server_address + ':3005/uploadAnzCsv';
-        let serverUploadFiltersLink = 'http://' + config.server.server_address + ':3005/uploadFilters';
+        let serverUploadAnzLink = 'http://' + config.server.server_address + ':' + config.server.server_port + '/uploadAnzCsv';
+        let serverUploadFiltersLink = 'http://' + config.server.server_address + ':' + config.server.server_port + '/uploadFilters';
 
 
         return (

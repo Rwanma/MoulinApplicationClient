@@ -33,7 +33,7 @@ class App extends Component {
     }
 
     verifyLogon = async (username, password) => {
-        let queryUrl = 'http://' + config.server.server_address + ':3005/GetLoginRole?login=' + username + '&password=' + password;
+        let queryUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/GetLoginRole?login=' + username + '&password=' + password;
         const response = await fetch(queryUrl);
         const myJsonData = await response.json();
 
@@ -80,7 +80,7 @@ class App extends Component {
         if (beginDate > endDate) {
             this.setState({ dateInputMessage: 'end date should be after begin date' , jsonServerData : this.emptyJsonServerData});
         } else {
-            let queryUrlWithDates = 'http://' + config.server.server_address + ':3005/' + serverUrl + '?beginDate=' +
+            let queryUrlWithDates = 'http://' + config.server.server_address + ':' + config.server.server_port + '/' + serverUrl + '?beginDate=' +
                 ScreenStates.formatDate(beginDate) + '&endDate=' + ScreenStates.formatDate(endDate) +
                 '&allowTableChanges=' + this.state.allowTableChanges + extraOptions;
             //console.log(queryUrlWithDates);

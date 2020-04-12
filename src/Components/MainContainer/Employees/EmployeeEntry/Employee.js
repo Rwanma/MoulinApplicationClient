@@ -97,7 +97,7 @@ class Employee extends React.Component {
             deleteFirstName: '',
             deleteLastName: ''
         };
-        this.getEmployeeData('http://' + config.server.server_address + ':3005/Employees');
+        this.getEmployeeData('http://' + config.server.server_address + ':' + config.server.server_port + '/Employees');
     }
 
     getEmployeeData = async (employeeQuery) => {
@@ -175,7 +175,7 @@ class Employee extends React.Component {
     addEmployee() {
         if (this.isVerificationOk(0, this.state.addFirstName, this.state.addLastName,
             this.state.addSalaryTransfer, this.state.addSalaryCash)) {
-            let addEmployeeUrl = 'http://' + config.server.server_address + ':3005/addEmployee?' +
+            let addEmployeeUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/addEmployee?' +
                 '&firstName=' + this.state.addFirstName +
                 '&lastName=' + this.state.addLastName +
                 '&salaryTransfer=' + this.state.addSalaryTransfer +
@@ -197,7 +197,7 @@ class Employee extends React.Component {
             alert('you need to select an employee to modify')
         } else if (this.isVerificationOk(this.state.modifyId.value, this.state.modifyFirstName, this.state.modifyLastName,
             this.state.modifySalaryTransfer, this.state.modifySalaryCash)) {
-            let modifyEmployeeUrl = 'http://' + config.server.server_address + ':3005/modifyEmployee?' +
+            let modifyEmployeeUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/modifyEmployee?' +
                 'id=' + this.state.modifyId.value +
                 '&firstName=' + this.state.modifyFirstName +
                 '&lastName=' + this.state.modifyLastName +
@@ -224,7 +224,7 @@ class Employee extends React.Component {
             this.state.deleteFirstName + ' ' +
             this.state.deleteLastName)) {
 
-            let removeEmployeeUrl = 'http://' + config.server.server_address + ':3005/deleteEmployee?' +
+            let removeEmployeeUrl = 'http://' + config.server.server_address + ':' + config.server.server_port + '/deleteEmployee?' +
                 'id=' + this.state.deleteId.value;
 
             this.getEmployeeData(removeEmployeeUrl);
