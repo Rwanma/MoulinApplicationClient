@@ -27,7 +27,7 @@
     "jqwidgets-framework": "^8.1.4",
     "jqwidgets-scripts": "^8.1.4",
     "material-ui-pickers": "^2.1.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mui-datatables": "^2.0.0-beta-41",
     "mui-date-picker": "^0.1.10",
     "prop-types": "^15.6.2",
